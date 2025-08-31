@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <title>Profile</title>
+</head>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body{
+    width: 100%;
+}
+h1{
+    font-size: 50px;
+    line-height: 64px;
+    color: #222;
+}
+h2{
+    font-size: 46px;
+    line-height: 54px;
+    color: #222;
+}
+h4{
+    font-size: 20px;
+    color: #222;
+}
+h6{
+    font-size: 700;
+    font-weight: 12px;
+}
+p{
+    font-size: 16px;
+    color: #465b52;
+    margin: 15px 0 20px 0;
+}
+.section-p1{
+    padding: 40px 80px;
+}
+.section-m1{
+    margin: 40px 0;
+}    
+/* Header */
+.logo {
+    position: absolute;
+    left: 20px; 
+    top: 50%;
+    transform: translateY(-50%); 
+    z-index: 10;
+}
+
+/* Logo image styling */
+.logo img {
+    height: 40px; 
+    width: auto; 
+    max-width: 200px; 
+    object-fit: contain; 
+    display: block;
+}
+
+.logo img.fixed-size {
+    width: 150px;
+    height: 40px;
+    object-fit: contain;
+}
+.header{
+    display: block;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 80px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    z-index: 999;
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+#navbar .cart_link{
+    font-size: 20px;
+}
+#form-open{
+    cursor: pointer;
+}
+#navbar{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+#navbar li{
+    list-style: none;
+    padding: 0 20px;
+    position: relative;
+}
+#navbar li a, #form-open{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    transition: 0.3s ease;
+}
+#navbar li a:hover, 
+#navbar li a.active{
+    color: rgb(73, 8, 138);
+}
+#navbar li a.active::after,
+#navbar li a:hover::after{
+    content: "";
+    width: 30%;
+    height: 2px;
+    background: rgb(73, 8, 138);
+    position: absolute;
+    bottom: -4px;
+    left: 20px;
+}
+#close{
+    display: none;
+}
+#mobile{
+    display: none;
+    align-items: center;
+}
+#navbar li a i.uil-user-circle {
+    font-size: 22px;
+    vertical-align: middle;
+}
+#navbar li:first-child {
+    margin-right: 10px;
+}
+/* Profile Top Section */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 900px;
+            margin: 30px auto 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .profile-header i {
+            font-size: 70px;
+            color: #49088a;
+            margin-right: 20px;
+        }
+        .profile-details h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .profile-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .username-text {
+            font-size: 14px;
+            color: #777;
+        }
+
+        /* Form Section */
+        .account-form {
+            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .account-form h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .account-form label {
+            font-weight: 500;
+            margin-top: 10px;
+            display: block;
+        }
+        .account-form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .account-form button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background: #49088a;
+            color: white;
+            border: none;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .account-form button:hover {
+            background: #34066b;
+        }
+        .logout-btn {
+            background: #dc3545;
+        }
+        .logout-btn:hover {
+            background: #b02a37;
+        }
+</style>
+<body>
+    
+     <!-- Header -->
+     <header class="header">
+       <div>
+            <ul id="navbar">
+                <div class="logo">
+                    <img src="images/smallNikelogo_23.jpg" alt="">
+                </div>
+                <li id="profileMenu" style="display: none;"><a class="active" href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
+                <li><a href="ecommerce.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="contact_link">Contact</a></li>
+                <li id="lg-bag"><a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
+                <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
+                <a href="#" id="close"><i class="uil uil-times"></i></a>
+            </ul>
+       </div>
+       <div id="mobile">
+        <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
+        <i id="bar" class="uil uil-bars"></i>
+       </div>
+     </header>
+
+     <!-- Profile Display -->
+    <section class="profile-header">
+        <i class="uil uil-user-circle"></i>
+        <div class="profile-details">
+            <h2 id="displayFullname"></h2>
+            <p id="displayEmail"></p>
+            <p class="username-text" id="displayUsername"></p>
+        </div>
+    </section>
+
+    
+     <!-- Account Form -->
+    <section class="account-form">
+        <h3>Edit Account Details</h3>
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname">
+
+        <label for="username">Username</label>
+        <input type="text" id="username">
+
+        <label for="email">Email</label>
+        <input type="email" id="email">
+
+        <label for="password">New Password</label>
+        <input type="password" id="password">
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword">
+
+        <button id="saveChangesBtn">Save Changes</button>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </section>
+
+    
+
+</body>
+</html>
+<script type="module" src="firebase.js"></script>
+<script type="module" src="authStatus.js"></script>
+<script type="module">
+import { getAuth, signOut, onAuthStateChanged, updateEmail, updatePassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { app } from './firebase.js';
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Load user details from Firestore
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            document.getElementById("displayFullname").textContent = data.fullname || "";
+            document.getElementById("displayEmail").textContent = data.email || "";
+            document.getElementById("displayUsername").textContent = data.username ? `@${data.username}` : "";
+
+            document.getElementById("fullname").value = data.fullname || "";
+            document.getElementById("username").value = data.username || "";
+            document.getElementById("email").value = data.email || "";
+        }
+    } else {
+        window.location.href = "ecommerce.html";
+    }
+});
+
+// Update account details
+document.getElementById("saveChangesBtn").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const fullname = document.getElementById("fullname").value;
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+        const user = auth.currentUser;
+
+        // Update Firestore data
+        await updateDoc(doc(db, "users", user.uid), {
+            fullname: fullname,
+            username: username,
+            email: email
+        });
+
+        // Update email in Auth if changed
+        if (email !== user.email) {
+            await updateEmail(user, email);
+        }
+
+        // Update password if provided
+        if (password.trim() !== "") {
+            await updatePassword(user, password);
+        }
+
+        alert("Account details updated successfully!");
+    } catch (error) {
+        console.error("Error updating account:", error);
+        alert("Failed to update account. " + error.message);
+    }
+});
+
+// Logout with confirmation
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+    const confirmLogout = confirm("Are you sure you want to log out?");
+    if (!confirmLogout) return;
+
+    try {
+        await signOut(auth);
+        alert("You have been logged out successfully.");
+        window.location.href = "ecommerce.html";
+    } catch (error) {
+        console.error("Error during logout:", error);
+        alert("Failed to log out. Please try again.");
+    }
+});
+</script>

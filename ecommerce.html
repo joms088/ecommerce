@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Ecommerce - Home</title>
+</head> 
+<style>
+        .uil-shopping-cart[data-count]:after {
+    content: attr(data-count);
+    font-size: 12px;
+    color: #fff;
+    background: red;
+    border-radius: 50%;
+    padding: 2px 6px;
+    position: absolute;
+    top: -8px;
+    right: -10px;
+}
+#navbar li a i.uil-user-circle {
+    font-size: 22px;
+    vertical-align: middle;
+}
+#navbar li:first-child {
+    margin-right: 10px;
+}
+</style>
+<body>
+    
+    <!-- Header -->
+     <header class="header">
+       <div>
+            <ul id="navbar">
+                <div class="logo">
+                    <img src="images/smallNikelogo_23.jpg" alt="">
+                </div>
+                <li id="profileMenu" style="display: none;"><a href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
+                <li><a class="active" href="ecommerce.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="contact_link">Contact</a></li>
+                <li id="lg-bag"><a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
+                <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
+                <a href="#" id="close"><i class="uil uil-times"></i></a>
+            </ul>
+       </div>
+       <div id="mobile">
+        <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
+        <i id="bar" class="uil uil-bars"></i>
+       </div>
+     </header>
+
+     <!-- Homepage -->
+      <!-- Homepage -->
+<section id="homepage_b">
+  <div class="slider-wrapper">
+    <div class="slider" id="slider">
+
+      <!-- Slide 1 -->
+      <div class="slide" id="slide-1">
+        <img src="images/Nike Banner (Community) – Figma - Google Chrome 12_08_2025 9_14_25 pm.png" alt="">
+        <div class="slide-text">
+          <h4>Exclusive Offers Just for You</h4>
+          <h2>Shop quality at the best price</h2>
+          <h1>Limited-time deals</h1>
+          <p>Mega Shoe Sale, Limited Time Only!</p>
+          <button id="shopBtn">Shop Now</button>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide" id="slide-2">
+        <img src="images/nike-sb-air-max-95-can-you-skate-those.avif" alt="">
+        <div class="slide-text">
+          
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide" id="slide-3">
+        <img src="images/street-snkrs-air-max-95-skate-jam-nyc.avif" alt="">
+        <div class="slide-text">
+          
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Navigation dots -->
+    <div class="slider-nav">
+      <a href="#slide-1"></a>
+      <a href="#slide-2"></a>
+      <a href="#slide-3"></a>
+    </div>
+  </div>
+</section>
+
+
+     
+      <!-- Feature Products -->
+       <section id="feature_products" class="section-p1">
+            <h2>Featured Products</h2>
+            <p>Here you can check out our products with fair price</p>
+            <div class="prod_container" id="product-list">
+                <!-- <div class="prod" data-product-id="a-one-ep">
+                    <img src="product/BasketballC_A'ONE+EP.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>A' one EP</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="giannis-immortality-4">
+                    <img src="product/BasketballC_GIANNIS+IMMORTALITY+4+EP.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Giannis Immortarlity 4 EP</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="prod" data-product-id="ja-2-koolaid">
+                    <img src="product/BasketballC_JA+2++KOOLAID++EP.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>JA KoolAid EP</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="jordan-luka-4">
+                    <img src="product/BasketballC_JORDAN+LUKA+4+PF.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Jordan Luka 4 PF</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                     
+                    </div>
+                </div>
+                <div class="prod" data-product-id="kobe-ix-elite">
+                    <img src="product/BasketballC_KOBE+IX+ELITE+LOW+EM+PROTRO.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Kobe IX Elite Low EM Potro</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                     
+                    </div>
+                </div>
+                <div class="prod" data-product-id="air-max-alpha">
+                    <img src="product/GymC_M+AIR+MAX+ALPHA+TRAINER+6.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Air Max Alpha Trainer</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                    
+                    </div>
+                </div>
+                <div class="prod" data-product-id="mc-trainer">
+                    <img src="product/RunningC_PEGASUS+PLUS.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Nike MC Trainer</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="prod" data-product-id="metcon-10">
+                    <img src="product/GymC_M+NIKE+METCON+10.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Nike Metcon 10</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                    
+                    </div>
+                </div> -->
+            </div>
+       </section>
+
+       <section id="banner" class="section-m1">
+            <h4>Repair Services</h4>
+            <h2>Up to <span>70% Off</span> - All Shoes</h2>
+       </section>
+
+       <section class="banner_section">
+            <div class="banner_img">
+                <img src="images/basketballbanner_homepage.jpg" alt="">
+                <h2>Basketball Collection</h2>
+            </div>
+            <div class="banner_img">
+                <img src="images/lifestylebanner_homepage.webp" alt="">
+                <h2>Lifestyle Shoes</h2>
+            </div>
+            <div class="banner_img">
+                <img src="images/runningbanner_homepage.webp" alt="">
+                <h2>Running Gear</h2>
+            </div>
+       </section>
+
+     <!-- Login/Signup Form Modal -->
+      <section class="home">
+        <div class="form_container">
+            <i class="uil uil-times form_close"></i>
+            <!-- Login Form -->
+            <div class="form login_form">
+                <form action="#">
+                <div id="signInMessage" class="messageDiv" style="display: none;"></div>
+                    <h2>Login</h2>
+                    <div class="input_box">
+                        <input type="email" id="login_email" placeholder="Enter your Email" required>
+                        <i class="uil uil-envelope-alt username"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="login_password" placeholder="Enter your password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+
+                    <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check">
+                            <label for="check">Remember me</label>
+                        </span>
+                        <span>
+                            <a href="#" class="forgot_pw" id="forgotPassword">Forgot password?</a>
+                        </span>
+                    </div> 
+
+                    <button class="button" id="login_btn">Login</button>
+
+                    <p class="Pspace">or continue with</p>
+
+                    <div class="google">
+                        <button id="google-login-btn" class="google_button">
+                             <img src="google.png" alt="Google logo" class="google_icon">
+                                Sign in with Google
+                        </button>
+                    </div>
+
+                    <div class="login_singup">
+                        Don't have an account? <a href="#" id="signup">Signup</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+             <div class="form signup_form">
+                <form action="#">   
+                    <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
+                    <h2>Signup</h2>
+                    <div class="input_box">
+                        <input type="text" id="fullname" placeholder="Enter your Fullname" required>
+                        <i class="uil uil-user fullname"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="text" id="username" placeholder="Enter your Username" required>
+                        <i class="uil uil-user-circle username"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="email" id="email" placeholder="Enter your Email" required>
+                        <i class="uil uil-envelope-alt email"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="create_password" placeholder="Create Password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+                     <div class="input_box">
+                        <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+                    <button class="button" id="signup_btn">Signup</button>
+
+                    <div class="login_singup">
+                        Already have an account? <a href="#" id="login">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </section>
+
+      <footer class="section-p1">
+        <div class="col_footer">
+            <h4>Contact</h4>
+            <p><strong>Adress: </strong> 562 Wellington Road, Street 32, San Francisco</p>
+            <p><strong>Phone: </strong> +63123 456 7890</p>
+            <p><strong>Email: </strong> jomari@gmail.com</p>
+            <div class="followUs">
+                <h4>Follow Us</h4>
+                <div class="icons">
+                    <i class="uil uil-facebook-f"></i>
+                    <i class="uil uil-twitter"></i>
+                    <i class="uil uil-instagram"></i>
+                    <i class="uil uil-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col_footer">
+            <h4>About</h4>
+            <a href="#">About us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Contact us</a>
+        </div>
+
+        <div class="col_footer">
+            <h4>Shop</h4>
+            <p>Men's Shoes</p>
+            <p>Women's Shoes</p>
+            <p>Basketball Shoes</p>
+            <p>Running Shoes</p>
+        </div>
+
+        <div class="copyright">
+            <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
+        </div>
+      </footer>
+      
+       <script type="module" src="firebase.js"></script>
+</body>
+</html>
+<script src="script.js"></script>
+<script type="module" src="productnav.js"></script>
+<script src="cartcount.js"></script>
+
+<script type="module">
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { app } from "./firebase.js";
+
+const auth = getAuth(app);
+
+const profileMenu = document.getElementById("profileMenu");
+const loginMenu = document.getElementById("loginMenu");
+
+// Watch login status
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is logged in
+        profileMenu.style.display = "block";
+        loginMenu.style.display = "none";
+    } else {
+        // User is logged out
+        profileMenu.style.display = "none";
+        loginMenu.style.display = "block";
+    }
+});
+</script>
+
+<script>
+const slider = document.getElementById("slider");
+const slides = document.querySelectorAll(".slide");
+let currentIndex = 0;
+const slideCount = slides.length;
+
+function goToSlide(index) {
+  slider.scrollTo({
+    left: slides[index].offsetLeft,
+    behavior: "smooth"
+  });
+}
+
+// Auto slide every 4 seconds
+setInterval(() => {
+  currentIndex = (currentIndex + 1) % slideCount;
+  goToSlide(currentIndex);
+}, 4000);
+</script>

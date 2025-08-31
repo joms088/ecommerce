@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="shop.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <title>Shop</title>
+</head>
+<style>
+    /* Small cart count bubble */
+.uil-shopping-cart[data-count]:after {
+    content: attr(data-count);
+    font-size: 12px;
+    color: #fff;
+    background: red;
+    border-radius: 50%;
+    padding: 2px 6px;
+    position: absolute;
+    top: -8px;
+    right: -10px;
+}
+</style>
+<body>
+    
+    <!-- Header -->
+     <header class="header">
+       <div>
+            <ul id="navbar">
+                <div class="logo">
+                    <img src="images/smallNikelogo_23.jpg" alt="">
+                </div>
+                <li id="profileMenu" style="display: none;"><a href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
+                <li><a href="ecommerce.html">Home</a></li>
+                <li><a class="active" href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="contact_link">Contact</a></li>
+                <li id="lg-bag"><a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
+                <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
+                <a href="#" id="close"><i class="uil uil-times"></i></a>
+            </ul>
+       </div>
+       <div id="mobile">
+        <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
+        <i id="bar" class="uil uil-bars"></i>
+       </div>
+     </header>
+
+     <section id="prod_details" class="section-p1">
+        <div class="single-prod-image">
+            <img src="product/BasketballC_A'ONE+EP.avif" width="100%" id="MainImg" alt="">
+
+            <div class="small-img-group">
+                <div class="small-img-col">
+                    <img src="product/BasketballC_A'ONE+EP.avif" width="100%" id="small-img" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="product/BasketballC_A'ONE+EP_2.avif" width="100%" id="small-img" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="product/BasketballC_A'ONE+EP_3.avif" width="100%" id="small-img" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="product/BasketballC_A'ONE+EP_4.avif" width="100%" id="small-img" class="small-img" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="single-prod-details">
+            <h6>Nike Shoes</h6>
+            <h4>Nike ---</h4>
+            <h2>₱1</h2>
+            <select id="size">
+                <option>Select Size</option>
+                <option value="7">US 7</option>
+                <option value="8">US 8</option>
+                <option value="9">US 9</option>
+                <option value="10">US 10</option>
+            </select>
+            <input type="number" value="1" id="quantity">
+            <button id="addToCartBtn" class="addToCart">Add To Cart</button>
+            <h4>Product Details</h4>
+            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                 Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio,
+                  vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est,
+                   ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet.
+                    Mauris ante ligula, facilisis sed ornare eu, lobortis in odio.</span>
+        </div>
+     </section>
+
+     <!-- Login/Signup Form -->
+      <section class="home">
+        <div class="form_container">
+            <i class="uil uil-times form_close"></i>
+            <!-- Login Form -->
+            <div class="form login_form">
+                <form action="#">
+                <div id="signInMessage" class="messageDiv" style="display: none;"></div>
+                    <h2>Login</h2>
+                    <div class="input_box">
+                        <input type="email" id="login_email" placeholder="Enter your Email" required>
+                        <i class="uil uil-envelope-alt username"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="login_password" placeholder="Enter your password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+
+                    <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check">
+                            <label for="check">Remember me</label>
+                        </span>
+                        <span>
+                            <a href="#" class="forgot_pw" id="forgotPassword">Forgot password?</a>
+                        </span>
+                    </div> 
+
+                    <button class="button" id="login_btn">Login</button>
+
+                    <p class="Pspace">or continue with</p>
+
+                    <div class="google">
+                        <button id="google-login-btn" class="google_button">
+                             <img src="google.png" alt="Google logo" class="google_icon">
+                                Sign in with Google
+                        </button>
+                    </div>
+
+                    <div class="login_singup">
+                        Don't have an account? <a href="#" id="signup">Signup</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+             <div class="form signup_form">
+                <form action="#">   
+                    <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
+                    <h2>Signup</h2>
+                    <div class="input_box">
+                        <input type="text" id="username" placeholder="Enter your username" required>
+                        <i class="uil uil-envelope-alt username"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                        <i class="uil uil-envelope-alt email"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="create_password" placeholder="Create password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+                     <div class="input_box">
+                        <input type="password" id="confirm_password" placeholder="Confirm password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+
+                    <!-- <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check">
+                            <label for="check">Remember me</label>
+                        </span>
+                        <span>
+                            <a href="#" class="forgot_pw">Forgot password?</a>
+                        </span>
+                    </div> -->
+
+                    <button class="button" id="signup_btn">Signup</button>
+
+                    <div class="login_singup">
+                        Already have an account? <a href="#" id="login">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </section>
+
+       <footer class="section-p1">
+        <div class="col_footer">
+            <h4>Contact</h4>
+            <p><strong>Adress: </strong> 562 Wellington Road, Street 32, San Francisco</p>
+            <p><strong>Phone: </strong> +63123 456 7890</p>
+            <p><strong>Email: </strong> jomari@gmail.com</p>
+            <div class="followUs">
+                <h4>Follow Us</h4>
+                <div class="icons">
+                    <i class="uil uil-facebook-f"></i>
+                    <i class="uil uil-twitter"></i>
+                    <i class="uil uil-instagram"></i>
+                    <i class="uil uil-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col_footer">
+            <h4>About</h4>
+            <a href="#">About us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Contact us</a>
+        </div>
+
+        <div class="col_footer">
+            <h4>Shop</h4>
+            <p>Men's Shoes</p>
+            <p>Women's Shoes</p>
+            <p>Basketball Shoes</p>
+            <p>Running Shoes</p>
+        </div>
+
+        <div class="copyright">
+            <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
+        </div>
+      </footer>
+</body>
+</html>
+<script type="module" src="firebase.js"></script>
+<script src="script.js"></script>
+<script type="module" src="productnav.js"></script>
+<script src="cartcount.js"></script>
+<script type="module" src="authStatus.js"></script>
+<script type="module">
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { app } from './firebase.js';
+
+const auth = getAuth(app);
+
+const MainImg = document.getElementById("MainImg");
+const smallimg = document.getElementsByClassName("small-img");
+
+smallimg[0].onclick = function(){ MainImg.src = smallimg[0].src; }
+smallimg[1].onclick = function(){ MainImg.src = smallimg[1].src; }
+smallimg[2].onclick = function(){ MainImg.src = smallimg[2].src; }
+smallimg[3].onclick = function(){ MainImg.src = smallimg[3].src; }
+
+document.getElementById('addToCartBtn').addEventListener('click', function () {
+    // Check if logged in first
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            alert("You need to login/signup first to purchase a product.");
+            return;
+        }
+
+        // User is logged in → continue your existing Add to Cart logic
+        const size = document.getElementById('size').value;
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const productData = JSON.parse(sessionStorage.getItem('selectedProduct'));
+
+        if (!size || size === "Select Size") {
+            alert("Please select a size.");
+            return;
+        }
+
+        if (!quantity || quantity <= 0) {
+            alert("Please enter a valid quantity.");
+            return;
+        }
+
+        const cartItem = {
+            id: sessionStorage.getItem('selectedProductId'),
+            name: productData.name,
+            price: productData.price,
+            image: productData.images[0],
+            size: size,
+            quantity: quantity
+        };
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        const existingIndex = cart.findIndex(item => item.id === cartItem.id && item.size === cartItem.size);
+        if (existingIndex > -1) {
+            cart[existingIndex].quantity += quantity;
+        } else {
+            cart.push(cartItem);
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert("Added to cart!");
+    });
+});
+</script>
