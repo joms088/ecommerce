@@ -3,418 +3,572 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="cart.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <title>Cart</title>
+    <title>Shopping Cart - Start</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #7fb069 0%, #8bc34a 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Fixed Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: rgba(127, 176, 105, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo::before {
+            content: "///";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links a.active {
+            font-weight: bold;
+            opacity: 1;
+        }
+
+        /* Main Cart Section */
+        .cart-section {
+            padding-top: 120px;
+            padding-bottom: 60px;
+            min-height: 100vh;
+        }
+
+        .cart-title {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        /* Cart Table */
+        .cart-table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cart-table thead {
+            background: #f4a261;
+        }
+
+        .cart-table th {
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #e76f51;
+        }
+
+        .cart-table th:first-child {
+            text-align: center;
+        }
+
+        .cart-table th:last-child {
+            text-align: center;
+        }
+
+        .cart-table tbody {
+            background: #f8f9fa;
+        }
+
+        .cart-table td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #dee2e6;
+            color: #333;
+        }
+
+        .cart-table tbody tr:hover {
+            background: #e9ecef;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #ccc;
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .remove-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Empty Cart Message */
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bbb;
+        }
+
+        .empty-cart h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .empty-cart p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .continue-shopping {
+            background: #7fb069;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+
+        .continue-shopping:hover {
+            background: #6a9c57;
+        }
+
+        /* Checkout Section */
+        .checkout-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .checkout-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+
+        .checkout-header {
+            background: #f4a261;
+            padding: 20px;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .checkout-content {
+            padding: 30px;
+            color: #333;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .total-row.grand-total {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #7fb069;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .checkout-btn {
+            background: #7fb069;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background: #6a9c57;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .cart-section {
+                padding-top: 140px;
+            }
+
+            .cart-table-container {
+                overflow-x: auto;
+            }
+
+            .cart-table th,
+            .cart-table td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            .checkout-section {
+                justify-content: center;
+            }
+
+            .checkout-container {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-title {
+                font-size: 1.5rem;
+            }
+
+            .cart-table th,
+            .cart-table td {
+                padding: 8px 5px;
+                font-size: 0.8rem;
+            }
+
+            .product-image {
+                width: 40px;
+                height: 40px;
+            }
+
+            .quantity-input {
+                width: 50px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cart-table-container,
+        .checkout-container {
+            animation: fadeInUp 0.6s ease;
+        }
+    </style>
 </head>
-<style>
-    .checkout-popup {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 9999;
-}
-.popup-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  width: 300px;
-}
-.popup-buttons {
-  margin-top: 15px;
-}
-.popup-buttons button {
-  margin: 5px;
-  padding: 8px 16px;
-}
-</style>
 <body>
-    
-     <!-- Header -->
-     <header class="header">
-       <div>
-            <ul id="navbar">
-                <div class="logo">
-                    <img src="images/smallNikelogo_23.jpg" alt="">
-                </div>
-                <li id="profileMenu" style="display: none;"><a href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
-                <li><a href="ecommerce.html">Home</a></li>
-                <li><a href="shop.html">Shop</a></li>
+    <!-- Fixed Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">Start</div>
+            <ul class="nav-links">
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="dashboard.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="contact.html" class="contact_link">Contact</a></li>
-                <li id="lg-bag"><a class="active" href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
-                <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
-                <a href="#" id="close"><i class="uil uil-times"></i></a>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html" class="active">Cart</a></li>
             </ul>
-       </div>
-       <div id="mobile">
-        <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
-        <i id="bar" class="uil uil-bars"></i>
-       </div>
-     </header>
-
-     <section id="cart-header" class="cart-header">
-        <h2>#cart</h2>
-        <p>Add your coupon code & SAVE up to 70%</p>
-     </section>
-
-     <section id="cart" class="section-p1">
-        <table width="100%">
-            <thead>
-                <tr>
-                    <td>Remove</td>
-                    <td>Image</td>
-                    <td>Product</td>
-                    <td>Size</td>
-                    <td>Price</td>
-                    <td>Quantity</td>
-                    <td>SubTotal</td>
-                </tr>
-            </thead>
-            <tbody id="cartTableBody">
-                
-            </tbody>
-        </table>
-     </section>
-
-    <section id="cart-add" class="section-p1">
-        <div id="subtotal">
-            <h3>Cart Totals</h3>
-            <table>
-                <tr>
-                    <td>Cart SubTotal</td>
-                    <td id="subtotalAmount">₱0</td>
-                </tr>
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td id="totalAmount"><strong>₱0</strong></td>
-                </tr>
-            </table>
-            <button class="proceedBtn">Proceed to Checkout</button>
         </div>
-    </section>     
+    </nav>
 
-    <div id="checkoutPopup" class="checkout-popup" style="display:none;">
-  <div class="popup-content">
-    <h2>Upload Payment Proof</h2>
-    <input type="file" id="proofFile" accept=".png,.jpeg,.jpg,.pdf">
-    <div class="popup-buttons">
-      <button id="cancelCheckout">Cancel</button>
-      <button id="confirmCheckout">Proceed</button>
-    </div>
-  </div>
-</div>
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            <h1 class="cart-title">Shopping Cart</h1>
+            
+            <!-- Cart Table -->
+            <div class="cart-table-container" id="cartTableContainer">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartItems">
+                       
+                    </tbody>
+                </table>
+                
+                <!-- Empty Cart Message (hidden by default) -->
+                <div class="empty-cart" id="emptyCart" style="display: none;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Add some products to get started!</p>
+                    <a href="#shop" class="continue-shopping">Continue Shopping</a>
+                </div>
+            </div>
 
-     <!-- Home -->
-      <section class="home">
-        <div class="form_container">
-            <i class="uil uil-times form_close"></i>
-            <!-- Login Form -->
-            <div class="form login_form">
-                <form action="#">
-                <div id="signInMessage" class="messageDiv" style="display: none;"></div>
-                    <h2>Login</h2>
-                    <div class="input_box">
-                        <input type="email" id="login_email" placeholder="Enter your Email" required>
-                        <i class="uil uil-envelope-alt username"></i>
+            <!-- Checkout Section -->
+            <div class="checkout-section" id="checkoutSection">
+                <div class="checkout-container">
+                    <div class="checkout-header">
+                        Cart Total
                     </div>
-                    <div class="input_box">
-                        <input type="password" id="login_password" placeholder="Enter your password" required>
-                        <i class="uil uil-lock password"></i>
-                        <i class="uil uil-eye-slash pw_hide"></i>
-                    </div>
-
-                    <div class="option_field">
-                        <span class="checkbox">
-                            <input type="checkbox" id="check">
-                            <label for="check">Remember me</label>
-                        </span>
-                        <span>
-                            <a href="#" class="forgot_pw" id="forgotPassword">Forgot password?</a>
-                        </span>
-                    </div> 
-
-                    <button class="button" id="login_btn">Login</button>
-
-                    <p class="Pspace">or continue with</p>
-
-                    <div class="google">
-                        <button id="google-login-btn" class="google_button">
-                             <img src="google.png" alt="Google logo" class="google_icon">
-                                Sign in with Google
+                    <div class="checkout-content">
+                        <div class="total-row">
+                            <span>Cart Total:</span>
+                            <span id="subtotal"></span>
+                        </div>
+                        
+                        <div class="total-row grand-total">
+                            <span>Total:</span>
+                            <span id="grandTotal"></span>
+                        </div>
+                        <button class="checkout-btn" onclick="proceedToCheckout()">
+                            Proceed to Checkout
                         </button>
                     </div>
-
-                    <div class="login_singup">
-                        Don't have an account? <a href="#" id="signup">Signup</a>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Signup Form -->
-             <div class="form signup_form">
-                <form action="#">   
-                    <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
-                    <h2>Signup</h2>
-                    <div class="input_box">
-                        <input type="text" id="username" placeholder="Enter your username" required>
-                        <i class="uil uil-envelope-alt username"></i>
-                    </div>
-                    <div class="input_box">
-                        <input type="email" id="email" placeholder="Enter your email" required>
-                        <i class="uil uil-envelope-alt email"></i>
-                    </div>
-                    <div class="input_box">
-                        <input type="password" id="create_password" placeholder="Create password" required>
-                        <i class="uil uil-lock password"></i>
-                        <i class="uil uil-eye-slash pw_hide"></i>
-                    </div>
-                     <div class="input_box">
-                        <input type="password" id="confirm_password" placeholder="Confirm password" required>
-                        <i class="uil uil-lock password"></i>
-                        <i class="uil uil-eye-slash pw_hide"></i>
-                    </div>
-
-                    <!-- <div class="option_field">
-                        <span class="checkbox">
-                            <input type="checkbox" id="check">
-                            <label for="check">Remember me</label>
-                        </span>
-                        <span>
-                            <a href="#" class="forgot_pw">Forgot password?</a>
-                        </span>
-                    </div> -->
-
-                    <button class="button" id="signup_btn">Signup</button>
-
-                    <div class="login_singup">
-                        Already have an account? <a href="#" id="login">Login</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-      </section>
-
-       <footer class="section-p1">
-        <div class="col_footer">
-            <h4>Contact</h4>
-            <p><strong>Adress: </strong> 562 Wellington Road, Street 32, San Francisco</p>
-            <p><strong>Phone: </strong> +63123 456 7890</p>
-            <p><strong>Email: </strong> jomari@gmail.com</p>
-            <div class="followUs">
-                <h4>Follow Us</h4>
-                <div class="icons">
-                    <i class="uil uil-facebook-f"></i>
-                    <i class="uil uil-twitter"></i>
-                    <i class="uil uil-instagram"></i>
-                    <i class="uil uil-youtube"></i>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="col_footer">
-            <h4>About</h4>
-            <a href="#">About us</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Contact us</a>
-        </div>
+    <!-- <script>
+        // Update item total when quantity changes
+        function updateTotal(input) {
+            const row = input.closest('tr');
+            const price = parseFloat(row.dataset.price);
+            const quantity = parseInt(input.value);
+            const total = price * quantity;
+            
+            row.querySelector('.item-total').textContent = '$' + total.toFixed(2);
+            updateCartTotals();
+        }
 
-        <div class="col_footer">
-            <h4>Shop</h4>
-            <p>Men's Shoes</p>
-            <p>Women's Shoes</p>
-            <p>Basketball Shoes</p>
-            <p>Running Shoes</p>
-        </div>
+        // Remove item from cart
+        function removeItem(button) {
+            const row = button.closest('tr');
+            row.style.animation = 'fadeOut 0.3s ease';
+            
+            setTimeout(() => {
+                row.remove();
+                updateCartTotals();
+                checkEmptyCart();
+            }, 300);
+        }
 
-        <div class="copyright">
-            <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
-        </div>
-      </footer>
+        // Update cart totals
+        function updateCartTotals() {
+            const itemTotals = document.querySelectorAll('.item-total');
+            let subtotal = 0;
+            
+            itemTotals.forEach(total => {
+                const value = parseFloat(total.textContent.replace('$', ''));
+                subtotal += value;
+            });
+            
+            const shipping = 15.00;
+            const taxRate = 0.1; // 10%
+            const tax = subtotal * taxRate;
+            const grandTotal = subtotal + shipping + tax;
+            
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+            document.getElementById('grandTotal').textContent = '$' + grandTotal.toFixed(2);
+        }
+
+        // Check if cart is empty
+        function checkEmptyCart() {
+            const cartItems = document.querySelectorAll('#cartItems tr');
+            const emptyCart = document.getElementById('emptyCart');
+            const checkoutSection = document.getElementById('checkoutSection');
+            
+            if (cartItems.length === 0) {
+                emptyCart.style.display = 'block';
+                checkoutSection.style.display = 'none';
+            }
+        }
+
+        // Proceed to checkout
+        function proceedToCheckout() {
+            alert('Proceeding to checkout...');
+            // Here you would redirect to checkout page or show checkout form
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                // For demo purposes, just highlight the active link
+            });
+        });
+
+        // Add fadeOut animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateX(0); }
+                to { opacity: 0; transform: translateX(-100px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script> -->
 </body>
 </html>
-<script type="module" src="firebase.js"></script>
-<script src="script.js"></script>
-<script src="cartcount.js"></script>
-<script type="module" src="authStatus.js"></script>
-
-<script>
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.querySelectorAll('.uil-shopping-cart').forEach(icon => {
-        icon.setAttribute('data-count', totalQty > 0 ? totalQty : '');
-    });
-}
-
-function renderCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const tableBody = document.getElementById('cartTableBody');
-    const subtotalAmount = document.getElementById('subtotalAmount');
-    const totalAmount = document.getElementById('totalAmount');
-    tableBody.innerHTML = '';
-    let subtotal = 0;
-
-    if (cart.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Your cart is empty.</td></tr>`;
-        subtotalAmount.textContent = "₱0";
-        totalAmount.textContent = "₱0";
-    } else {
-        cart.forEach((item, index) => {
-            // Ensure price is numeric
-            let priceNum = Number(String(item.price).replace(/[^0-9.]/g, ''));
-            if (isNaN(priceNum)) priceNum = 0;
-
-            const total = priceNum * item.quantity;
-            subtotal += total;
-
-            tableBody.innerHTML += `
-                <tr>
-                    <td><button class="removeBtn" data-index="${index}">x</button></td>
-                    <td><img src="${item.image}" alt="${item.name}" width="60"></td>
-                    <td>${item.name}</td>
-                    <td>${item.size}</td>
-                    <td>₱${priceNum.toLocaleString()}</td>
-                    <td>
-                        <input class="tdQty" type="number" min="1" value="${item.quantity}" 
-                               data-index="${index}">
-                    </td>
-                    <td>₱${total.toLocaleString()}</td>
-                </tr>
-            `;
-        });
-
-        subtotalAmount.textContent = `₱${subtotal.toLocaleString()}`;
-        totalAmount.textContent = `₱${subtotal.toLocaleString()}`;
-    }
-
-    updateCartCount();
-    attachCartEventListeners();
-}
-
-function attachCartEventListeners() {
-    document.querySelectorAll('.tdQty').forEach(input => {
-        input.addEventListener('change', (e) => {
-            const index = e.target.dataset.index;
-            const newQty = parseInt(e.target.value);
-            if (newQty > 0) updateQuantity(index, newQty);
-        });
-    });
-
-    document.querySelectorAll('.removeBtn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const index = btn.dataset.index;
-            removeFromCart(index);
-        });
-    });
-}
-
-function updateQuantity(index, newQty) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart[index].quantity = newQty;
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
-}
-
-function removeFromCart(index) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
-}
-
-// Initialize cart
-document.addEventListener('DOMContentLoaded', renderCart);
-</script>
-
 
 <script type="module">
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-import { app } from "./firebase.js";
+  import { db, auth } from "./firebase.js";
+  import { collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-const auth = getAuth(app);
-const db = getFirestore(app);
+  document.addEventListener("DOMContentLoaded", () => {
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        alert("Please log in to view your cart.");
+        return;
+      }
 
-// Show popup
-document.querySelector(".proceedBtn").addEventListener("click", () => {
-  document.getElementById("checkoutPopup").style.display = "flex";
-});
+      const userId = user.uid;
+      const cartRef = collection(db, "users", userId, "cart");
+      const querySnapshot = await getDocs(cartRef);
 
-// Cancel button
-document.getElementById("cancelCheckout").addEventListener("click", () => {
-  document.getElementById("checkoutPopup").style.display = "none";
-});
+      const cartItemsContainer = document.getElementById("cartItems");
+      let subtotal = 0;
 
-// Convert file → base64
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (err) => reject(err);
-    reader.readAsDataURL(file);
-  });
-}
+      querySnapshot.forEach((docSnap) => {
+        const item = docSnap.data();
+        const row = document.createElement("tr");
 
-// Confirm Checkout
-document.getElementById("confirmCheckout").addEventListener("click", async () => {
-  const user = auth.currentUser;
-  const fileInput = document.getElementById("proofFile");
-  const file = fileInput.files[0];
+        const total = item.price * item.quantity;
+        subtotal += total;
 
-  if (!user) {
-    alert("You must login/signup first to proceed.");
-    return;
-  }
+        row.innerHTML = `
+          <td><img src="${item.imageUrl}" class="product-image"></td>
+          <td>${item.name}</td>
+          <td>-</td>
+          <td>₱${item.price}</td>
+          <td>
+            <input type="number" value="${item.quantity}" min="1"
+              onchange="updateCartItem('${docSnap.id}', this.value)">
+          </td>
+          <td>₱${total}</td>
+          <td><button onclick="removeCartItem('${docSnap.id}')">Remove</button></td>
+        `;
+        cartItemsContainer.appendChild(row);
+      });
 
-  if (!file) {
-    alert("Please upload a file before proceeding.");
-    return;
-  }
-
-  // Validate file type
-  const validTypes = ["image/png", "image/jpeg", "application/pdf"];
-  if (!validTypes.includes(file.type)) {
-    alert("Only PNG, JPEG, and PDF files are allowed.");
-    return;
-  }
-
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  if (cart.length === 0) {
-    alert("Your cart is empty.");
-    return;
-  }
-
-  try {
-    // Convert file to base64
-    const base64Data = await fileToBase64(file);
-
-    // Save order with base64 proof
-    await addDoc(collection(db, "orders"), {
-      userId: user.uid,
-      cart: cart.map(item => ({
-    ...item,
-    price: Number(item.price.replace(/[^0-9.]/g, '')) // removes ₱ and any non-numeric characters
-  })),
-  total: cart.reduce((sum, item) => 
-    sum + (Number(item.price.replace(/[^0-9.]/g, '')) * item.quantity), 0
-  ),
-      proofData: base64Data,
-      proofType: file.type,
-      createdAt: serverTimestamp(),
-      status: "pending"
+      document.getElementById("subtotal").textContent = "₱" + subtotal.toFixed(2);
+      document.getElementById("grandTotal").textContent = "₱" + subtotal.toFixed(2);
     });
+  });
 
-    alert("Order placed successfully!");
-    localStorage.removeItem("cart");
-    document.getElementById("checkoutPopup").style.display = "none";
+  // Update quantity
+  window.updateCartItem = async (productId, newQty) => {
+    const user = auth.currentUser;
+    if (!user) return;
+    const itemRef = doc(db, "users", user.uid, "cart", productId);
+    await updateDoc(itemRef, { quantity: parseInt(newQty) });
+    location.reload();
+  };
 
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Failed to place order.");
-  }
-});
+  // Remove item
+  window.removeCartItem = async (productId) => {
+    const user = auth.currentUser;
+    if (!user) return;
+    const itemRef = doc(db, "users", user.uid, "cart", productId);
+    await deleteDoc(itemRef);
+    location.reload();
+  };
 </script>

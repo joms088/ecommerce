@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .form-wrapper {
+            display: flex;
+            transition: transform 0.6s ease-in-out;
+        }
+        
+        .form {
+            flex: 0 0 100%;
+            padding: 40px 30px;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #374151;
+            font-weight: 700;
+            font-size: 1.875rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: #9CA3AF;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .input-field:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .input-field.error {
+            border-color: #EF4444;
+        }
+        
+        .error-message {
+            color: #EF4444;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .form-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #6B7280;
+        }
+        
+        .switch-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .switch-link:hover {
+            color: #764ba2;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+            color: #9CA3AF;
+        }
+        
+        .form-divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #6B7280;
+        }
+        
+        .form-divider::before,
+        .form-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        .form-divider span {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            background: #10B981;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        @media (max-width: 480px) {
+            .form-container {
+                margin: 10px;
+            }
+            
+            .form {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-wrapper" id="formWrapper">
+            <!-- Login Form -->
+            <div class="form" id="loginForm">
+                <h2 class="form-title">Welcome Back</h2>
+                
+                <div class="success-message" id="loginSuccess">
+                    Registration successful! Please log in.
+                </div>
+                
+                <div class="input-group">
+                    <i class="input-icon fas fa-envelope"></i>
+                    <input type="email" class="input-field" id="loginEmail" placeholder="Email Address" required>
+                    <div class="error-message" id="loginEmailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="input-icon fas fa-lock"></i>
+                    <input type="password" class="input-field" id="loginPassword" placeholder="Password" required>
+                    <i class="password-toggle fas fa-eye" onclick="togglePassword('loginPassword', this)"></i>
+                    <div class="error-message" id="loginPasswordError">Please enter your password</div>
+                </div>
+                
+                <button id="loginBtn" class="btn btn-primary" onclick="handleLogin()">Login</button>
+                
+                <div class="form-switch">
+                    Don't have an account? <a class="switch-link" onclick="showSignup()">Sign up</a>
+                </div>
+            </div>
+            
+            <!-- Signup Form -->
+            <div class="form" id="signupForm">
+                <h2 class="form-title">Create Account</h2>
+                
+                <div class="input-group">
+                    <i class="input-icon fas fa-user"></i>
+                    <input type="text" class="input-field" id="signupFullname" placeholder="Full Name" required>
+                    <div class="error-message" id="signupFullnameError">Please enter your full name</div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="input-icon fas fa-at"></i>
+                    <input type="text" class="input-field" id="signupUsername" placeholder="Username" required>
+                    <div class="error-message" id="signupUsernameError">Please enter a username</div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="input-icon fas fa-envelope"></i>
+                    <input type="email" class="input-field" id="signupEmail" placeholder="Email Address" required>
+                    <div class="error-message" id="signupEmailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="input-icon fas fa-lock"></i>
+                    <input type="password" class="input-field" id="signupPassword" placeholder="Password" required>
+                    <i class="password-toggle fas fa-eye" onclick="togglePassword('signupPassword', this)"></i>
+                    <div class="error-message" id="signupPasswordError">Password must be at least 8 characters</div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="input-icon fas fa-lock"></i>
+                    <input type="password" class="input-field" id="confirmPassword" placeholder="Confirm Password" required>
+                    <i class="password-toggle fas fa-eye" onclick="togglePassword('signupConfirmPassword', this)"></i>
+                    <div class="error-message" id="signupConfirmPasswordError">Passwords do not match</div>
+                </div>
+                
+                <button id="signupBtn" class="btn btn-primary" onclick="handleSignup()">Create Account</button>
+                
+                <div class="form-switch">
+                    Already have an account? <a class="switch-link" onclick="showLogin()">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="module" src="/rose/firebase.js"></script>
+
+<script>
+        // Form switching functionality
+        function showSignup() {
+            document.getElementById('formWrapper').style.transform = 'translateX(-100%)';
+            resetForm('loginForm');
+        }
+        
+        function showLogin() {
+            document.getElementById('formWrapper').style.transform = 'translateX(0)';
+            resetForm('signupForm');
+        }
+        
+        function resetForm(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.querySelectorAll('.input-field');
+            const errors = form.querySelectorAll('.error-message');
+            
+            inputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('error');
+            });
+            
+            errors.forEach(error => {
+                error.style.display = 'none';
+            });
+        }
+        
+        // Password visibility toggle
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        // Form validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        // Login handler
+        function handleLogin() {
+            const email = document.getElementById('loginEmail');
+            const password = document.getElementById('loginPassword');
+            const emailError = document.getElementById('loginEmailError');
+            const passwordError = document.getElementById('loginPasswordError');
+            
+            let isValid = true;
+            
+            // Validate email
+            if (!email.value || !validateEmail(email.value)) {
+                email.classList.add('error');
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+            
+            // Validate password
+            if (!password.value) {
+                password.classList.add('error');
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else {
+                password.classList.remove('error');
+                passwordError.style.display = 'none';
+            }
+            
+            if (isValid) {
+                // Simulate login process
+                console.log('Login attempt with:', {
+                    email: email.value,
+                    password: password.value
+                });
+                
+                // In a real application, you would make an API call here
+                
+            }
+        }
+        
+        // Signup handler
+        function handleSignup() {
+            const fullname = document.getElementById('signupFullname');
+            const username = document.getElementById('signupUsername');
+            const email = document.getElementById('signupEmail');
+            const password = document.getElementById('signupPassword');
+            const confirmPassword = document.getElementById('signupConfirmPassword');
+            
+            const fullnameError = document.getElementById('signupFullnameError');
+            const usernameError = document.getElementById('signupUsernameError');
+            const emailError = document.getElementById('signupEmailError');
+            const passwordError = document.getElementById('signupPasswordError');
+            const confirmPasswordError = document.getElementById('signupConfirmPasswordError');
+            
+            let isValid = true;
+            
+            // Validate full name
+            if (!fullname.value.trim()) {
+                fullname.classList.add('error');
+                fullnameError.style.display = 'block';
+                isValid = false;
+            } else {
+                fullname.classList.remove('error');
+                fullnameError.style.display = 'none';
+            }
+            
+            // Validate username
+            if (!username.value.trim()) {
+                username.classList.add('error');
+                usernameError.style.display = 'block';
+                isValid = false;
+            } else {
+                username.classList.remove('error');
+                usernameError.style.display = 'none';
+            }
+            
+            // Validate email
+            if (!email.value || !validateEmail(email.value)) {
+                email.classList.add('error');
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+            
+            // Validate password
+            if (!password.value || !validatePassword(password.value)) {
+                password.classList.add('error');
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else {
+                password.classList.remove('error');
+                passwordError.style.display = 'none';
+            }
+            
+            // Validate confirm password
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.classList.add('error');
+                confirmPasswordError.style.display = 'block';
+                isValid = false;
+            } else {
+                confirmPassword.classList.remove('error');
+                confirmPasswordError.style.display = 'none';
+            }
+            
+            if (isValid) {
+                // Simulate signup process
+                console.log('Signup attempt with:', {
+                    fullname: fullname.value,
+                    username: username.value,
+                    email: email.value,
+                    password: password.value
+                });
+                
+                // Show success message and switch to login
+                showLogin();
+                document.getElementById('loginSuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('loginSuccess').style.display = 'none';
+                }, 5000);
+        
+            }
+        }
+        
+        // Event listeners for real-time validation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login form real-time validation
+            document.getElementById('loginEmail').addEventListener('input', function() {
+                if (validateEmail(this.value)) {
+                    this.classList.remove('error');
+                    document.getElementById('loginEmailError').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('loginPassword').addEventListener('input', function() {
+                if (this.value) {
+                    this.classList.remove('error');
+                    document.getElementById('loginPasswordError').style.display = 'none';
+                }
+            });
+            
+            // Signup form real-time validation
+            document.getElementById('signupFullname').addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('error');
+                    document.getElementById('signupFullnameError').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('signupUsername').addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('error');
+                    document.getElementById('signupUsernameError').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('signupEmail').addEventListener('input', function() {
+                if (validateEmail(this.value)) {
+                    this.classList.remove('error');
+                    document.getElementById('signupEmailError').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('signupPassword').addEventListener('input', function() {
+                if (validatePassword(this.value)) {
+                    this.classList.remove('error');
+                    document.getElementById('signupPasswordError').style.display = 'none';
+                    
+                    // Also validate confirm password if password changes
+                    const confirmPassword = document.getElementById('signupConfirmPassword');
+                    if (confirmPassword.value && this.value === confirmPassword.value) {
+                        confirmPassword.classList.remove('error');
+                        document.getElementById('signupConfirmPasswordError').style.display = 'none';
+                    }
+                }
+            });
+            
+            document.getElementById('signupConfirmPassword').addEventListener('input', function() {
+                const password = document.getElementById('signupPassword').value;
+                if (this.value === password) {
+                    this.classList.remove('error');
+                    document.getElementById('signupConfirmPasswordError').style.display = 'none';
+                }
+            });
+        });
+</script>
+

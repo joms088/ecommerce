@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Start</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: #7fb069;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "///";
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .profile-header {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: #663399;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info .email {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info .username {
+            color: #999;
+            font-size: 1rem;
+        }
+
+        /* Edit Form */
+        .edit-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .edit-section h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #663399;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.1);
+        }
+
+        .form-group input:disabled {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .save-btn {
+            background: #663399;
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .save-btn:hover {
+            background: #552288;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 51, 153, 0.3);
+        }
+
+        .save-btn:active {
+            transform: translateY(0);
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-section {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">Start</div>
+            <ul class="nav-links">
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="dashboard.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <div class="profile-info">
+                <h1 id="displayName">Name of User</h1>
+                <div class="email" id="displayEmail">user@email.com</div>
+                <div class="username" id="displayUsername">@username</div>
+            </div>
+        </div>
+
+        <!-- Edit Section -->
+        <div class="edit-section">
+            <h2>Edit Account Details</h2>
+            
+            <div id="messageContainer"></div>
+
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Enter New Password">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+                </div>
+
+                <button type="submit" class="save-btn" id="saveBtn">Save Changes</button>
+            </form>
+
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            updatePassword,
+            signOut,
+            reauthenticateWithCredential,
+            EmailAuthProvider
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc, 
+            updateDoc 
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyC5T13AA9RwkEGtialWm6ESOpJoDcEu8cA",
+            authDomain: "clothing-9944c.firebaseapp.com",
+            projectId: "clothing-9944c",
+            storageBucket: "clothing-9944c.firebasestorage.app",
+            messagingSenderId: "288730777920",
+            appId: "1:288730777920:web:cadd25379c20a922f312a5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM elements
+        const profileForm = document.getElementById('profileForm');
+        const saveBtn = document.getElementById('saveBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const messageContainer = document.getElementById('messageContainer');
+
+        // Display elements
+        const displayName = document.getElementById('displayName');
+        const displayEmail = document.getElementById('displayEmail');
+        const displayUsername = document.getElementById('displayUsername');
+        const profileAvatar = document.getElementById('profileAvatar');
+
+        // Form inputs
+        const fullNameInput = document.getElementById('fullName');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const newPasswordInput = document.getElementById('newPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        let currentUser = null;
+
+        // Show message function
+        function showMessage(message, type = 'success') {
+            messageContainer.innerHTML = `<div class="${type}-message">${message}</div>`;
+            setTimeout(() => {
+                messageContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        // Get user initials for avatar
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        // Load user data
+        async function loadUserData(user) {
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    
+                    // Update display
+                    displayName.textContent = userData.fullname || 'No Name';
+                    displayEmail.textContent = userData.email || user.email;
+                    displayUsername.textContent = `@${userData.username || 'username'}`;
+                    profileAvatar.textContent = getInitials(userData.fullname || 'User');
+                    
+                    // Update form inputs
+                    fullNameInput.value = userData.fullname || '';
+                    usernameInput.value = userData.username || '';
+                    emailInput.value = userData.email || user.email;
+                } else {
+                    // If no user document exists, create one with auth data
+                    const newUserData = {
+                        fullname: user.displayName || 'User',
+                        username: user.email.split('@')[0],
+                        email: user.email,
+                        createdAt: new Date()
+                    };
+                    
+                    await updateDoc(userDocRef, newUserData);
+                    loadUserData(user); // Reload with new data
+                }
+            } catch (error) {
+                console.error("Error loading user data:", error);
+                showMessage("Error loading user data", 'error');
+            }
+        }
+
+        // Auth state observer
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.emailVerified) {
+                currentUser = user;
+                loadUserData(user);
+            } else {
+                // Show empty state for non-authenticated users
+                displayName.textContent = "Name of User";
+                displayEmail.textContent = "user@email.com";
+                displayUsername.textContent = "@username";
+                profileAvatar.textContent = "?";
+                
+                fullNameInput.value = '';
+                usernameInput.value = '';
+                emailInput.value = '';
+                
+                // Optionally redirect to login after a delay or show login message
+                // window.location.href = "/rose/index.html";
+            }
+        });
+
+        // Form submit handler
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showMessage("User not authenticated", 'error');
+                return;
+            }
+
+            const formData = new FormData(profileForm);
+            const newPassword = newPasswordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            // Validate passwords if provided
+            if (newPassword || confirmPassword) {
+                if (newPassword !== confirmPassword) {
+                    showMessage("Passwords do not match", 'error');
+                    return;
+                }
+                if (newPassword.length < 6) {
+                    showMessage("Password must be at least 6 characters", 'error');
+                    return;
+                }
+            }
+
+            try {
+                saveBtn.textContent = 'Saving...';
+                saveBtn.disabled = true;
+
+                // Update Firestore document
+                const userDocRef = doc(db, "users", currentUser.uid);
+                const updateData = {
+                    fullname: fullNameInput.value,
+                    username: usernameInput.value,
+                    updatedAt: new Date()
+                };
+
+                await updateDoc(userDocRef, updateData);
+
+                // Update password if provided
+                if (newPassword) {
+                    await updatePassword(currentUser, newPassword);
+                    // Clear password fields
+                    newPasswordInput.value = '';
+                    confirmPasswordInput.value = '';
+                }
+
+                // Reload user data to update display
+                await loadUserData(currentUser);
+
+                showMessage("Profile updated successfully!", 'success');
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                if (error.code === 'auth/requires-recent-login') {
+                    showMessage("Please log out and log back in to change your password", 'error');
+                } else {
+                    showMessage("Error updating profile: " + error.message, 'error');
+                }
+            } finally {
+                saveBtn.textContent = 'Save Changes';
+                saveBtn.disabled = false;
+            }
+        });
+
+        // Logout handler
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                localStorage.removeItem("loggedInUserId");
+                window.location.href = "/rose/loginSignup.html";
+            } catch (error) {
+                console.error("Error signing out:", error);
+                showMessage("Error signing out", 'error');
+            }
+        });
+    </script>
+</body>
+</html>
