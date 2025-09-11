@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <title>Order History</title>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div>
+            <ul id="navbar">
+                <div class="logo">
+                    <img src="images/smallNikelogo_23.jpg" alt="">
+                </div>
+                <li id="profileMenu" style="display: none;"><a href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
+                <li><a href="ecommerce.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="contact_link">Contact</a></li>
+                <li id="lg-bag"><a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
+                <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
+                <a href="#" id="close"><i class="uil uil-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
+            <i id="bar" class="uil uil-bars"></i>
+        </div>
+    </header>
+
+    <section class="section-p1" id="order-history">
+        <h2>Order History</h2>
+        <table width="100%" id="orderTable">
+            <thead>
+                <tr>
+                    <td>Image</td>
+                    <td>Product</td>
+                    <td>Size</td>
+                    <td>Price</td>
+                    <td>Quantity</td>
+                    <td>Total</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody id="orderTableBody"></tbody>
+        </table>
+        <p id="noOrders" style="display:none; text-align:center;">No orders found.</p>
+        <p id="loginPrompt" style="display:none; text-align:center;">Please log in to view your order history.</p>
+    </section>
+
+    <!-- <footer class="section-p1">
+        <div class="col_footer">
+            <h4>Contact</h4>
+            <p><strong>Address: </strong> 562 Wellington Road, Street 32, San Francisco</p>
+            <p><strong>Phone: </strong> +63123 456 7890</p>
+            <p><strong>Email: </strong> jomari@gmail.com</p>
+            <div class="followUs">
+                <h4>Follow Us</h4>
+                <div class="icons">
+                    <i class="uil uil-facebook-f"></i>
+                    <i class="uil uil-twitter"></i>
+                    <i class="uil uil-instagram"></i>
+                    <i class="uil uil-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col_footer">
+            <h4>About</h4>
+            <a href="#">About us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Contact us</a>
+        </div>
+        <div class="col_footer">
+            <h4>Shop</h4>
+            <p>Men's Shoes</p>
+            <p>Women's Shoes</p>
+            <p>Basketball Shoes</p>
+            <p>Running Shoes</p>
+        </div>
+        <div class="copyright">
+            <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
+        </div>
+    </footer> -->
+
+    <script type="module">
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+        import { app } from "./firebase.js";
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const orderTableBody = document.getElementById('orderTableBody');
+        const noOrders = document.getElementById('noOrders');
+        const loginPrompt = document.getElementById('loginPrompt');
+        const profileMenu = document.getElementById('profileMenu');
+        const loginMenu = document.getElementById('loginMenu');
+
+        function updateNavbar(user) {
+            if (user) {
+                profileMenu.style.display = 'list-item';
+                loginMenu.style.display = 'none';
+            } else {
+                profileMenu.style.display = 'none';
+                loginMenu.style.display = 'list-item';
+            }
+        }
+
+        function loadOrderHistory(user) {
+            if (!user) {
+                orderTableBody.innerHTML = '';
+                noOrders.style.display = 'none';
+                loginPrompt.style.display = 'block';
+                updateNavbar(null);
+                return;
+            }
+
+            const q = query(collection(db, "orders"), where("userId", "==", user.uid));
+            getDocs(q).then((querySnapshot) => {
+                orderTableBody.innerHTML = '';
+                let hasOrders = false;
+
+                querySnapshot.forEach((docSnap) => {
+                    const order = docSnap.data();
+                    const orderId = docSnap.id;
+
+                    order.cart.forEach(item => {
+                        hasOrders = true;
+                        let priceStr = String(item.price || '0');
+                        const priceNum = Number(priceStr.replace(/[^0-9.]/g, '')) || 0;
+                        const total = priceNum * item.quantity;
+                        const statusClass = (order.status || "pending").toLowerCase();
+
+                        orderTableBody.innerHTML += `
+                            <tr>
+                                <td><img src="${item.image}" alt="${item.name}" width="60"></td>
+                                <td>${item.name}</td>
+                                <td>${item.size}</td>
+                                <td>₱${priceNum.toLocaleString()}</td>
+                                <td>${item.quantity}</td>
+                                <td>₱${total.toLocaleString()}</td>
+                                <td><span class="status ${statusClass}">${order.status || 'pending'}</span></td>
+                            </tr>
+                        `;
+                    });
+                });
+
+                if (!hasOrders) {
+                    noOrders.style.display = 'block';
+                    orderTableBody.style.display = 'none';
+                } else {
+                    noOrders.style.display = 'none';
+                    orderTableBody.style.display = 'table-row-group';
+                }
+                loginPrompt.style.display = 'none';
+            }).catch((error) => {
+                console.error("Error loading orders:", error);
+                orderTableBody.innerHTML = '<tr><td colspan="7">Error loading order history.</td></tr>';
+                loginPrompt.style.display = 'none';
+            });
+            updateNavbar(user);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            loadOrderHistory(user);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = auth.currentUser;
+            if (user) {
+                loadOrderHistory(user);
+            }
+        });
+    </script>

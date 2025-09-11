@@ -1,10 +1,11 @@
-import { db, collection, getDocs } from "./firebase.js";
+import { db, collection, getDocs, query, where } from "./firebase.js";
 
 // Function to fetch products from Firestore
 async function fetchProducts() {
     try {
         const productsCollection = collection(db, "products");
-        const productSnapshot = await getDocs(productsCollection);
+        const q = query(productsCollection, where("status", "==", "approved")); 
+        const productSnapshot = await getDocs(q);
         const products = {};
         
         productSnapshot.forEach(doc => {
@@ -27,11 +28,11 @@ async function renderProducts() {
         return;
     }
 
-    productContainer.innerHTML = ''; // Clear existing products
+    productContainer.innerHTML = ''; 
     const currentPage = window.location.pathname;
     const isEcommercePage = currentPage.includes('ecommerce.html');
     const productKeys = Object.keys(products);
-    const maxProducts = isEcommercePage ? 8 : productKeys.length; // Limit to 8 for ecommerce.html
+    const maxProducts = isEcommercePage ? 8 : productKeys.length; 
 
     productKeys.slice(0, maxProducts).forEach((productId, index) => {
         const product = products[productId];

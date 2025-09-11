@@ -254,6 +254,9 @@
             <div class="nav-item" id="usersBtn" onclick="showUsers()">
                 Users
             </div>
+            <div class="nav-item" id="productsBtn" onclick="showProducts()">
+                Products
+            </div>
         </div>
 
         <!-- Main Content -->
@@ -264,6 +267,27 @@
                     <h2>Welcome to Admin Dashboard</h2>
                     <p>Select an option from the sidebar to view data</p>
                 </div>
+
+                <!-- Products table -->
+                 <div id="productsTable" class="table-container">
+  <div class="table-header">
+    <h2 class="table-title">Products Table</h2>
+  </div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
 
                 <!-- Orders Table -->
                 <div id="ordersTable" class="table-container">
@@ -319,34 +343,32 @@
 
 <script>
         function showOrders() {
-            // Hide welcome message
-            document.getElementById('welcomeMessage').style.display = 'none';
-            
-            // Hide users table
-            document.getElementById('usersTable').classList.remove('active');
-            
-            // Show orders table
-            document.getElementById('ordersTable').classList.add('active');
-            
-            // Update button states
-            document.getElementById('ordersBtn').classList.add('active');
-            document.getElementById('usersBtn').classList.remove('active');
-        }
+    document.getElementById('welcomeMessage').style.display = 'none';
 
-        function showUsers() {
-            // Hide welcome message
-            document.getElementById('welcomeMessage').style.display = 'none';
-            
-            // Hide orders table
-            document.getElementById('ordersTable').classList.remove('active');
-            
-            // Show users table
-            document.getElementById('usersTable').classList.add('active');
-            
-            // Update button states
-            document.getElementById('usersBtn').classList.add('active');
-            document.getElementById('ordersBtn').classList.remove('active');
-        }
+    // Show only orders
+    document.getElementById('ordersTable').classList.add('active');
+    document.getElementById('usersTable').classList.remove('active');
+    document.getElementById('productsTable').classList.remove('active');
+
+    // Update sidebar active states
+    document.getElementById('ordersBtn').classList.add('active');
+    document.getElementById('usersBtn').classList.remove('active');
+    document.getElementById('productsBtn').classList.remove('active');
+}
+
+function showUsers() {
+    document.getElementById('welcomeMessage').style.display = 'none';
+
+    // Show only users
+    document.getElementById('usersTable').classList.add('active');
+    document.getElementById('ordersTable').classList.remove('active');
+    document.getElementById('productsTable').classList.remove('active');
+
+    // Update sidebar active states
+    document.getElementById('usersBtn').classList.add('active');
+    document.getElementById('ordersBtn').classList.remove('active');
+    document.getElementById('productsBtn').classList.remove('active');
+}
 
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
@@ -365,11 +387,12 @@
 </script>
 
 <script type="module">
-import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import { app } from "./firebase.js";
 
 const db = getFirestore(app);
 
+// Function to load Orders
 async function loadOrders() {
   const querySnapshot = await getDocs(collection(db, "orders"));
   const tbody = document.querySelector("#ordersTable tbody");
@@ -380,7 +403,6 @@ async function loadOrders() {
     const orderId = docSnap.id;
 
     order.cart.forEach(item => {
-      // Handle payment proof
       let proofCell = "No file";
       if (order.proofData) {
         proofCell = order.proofType === "application/pdf"
@@ -388,20 +410,17 @@ async function loadOrders() {
           : `<img src="${order.proofData}" width="60">`;
       }
 
-      // Status cell
       const statusClass = (order.status || "Pending").toLowerCase();
       const statusCell = `<span class="status ${statusClass}">${order.status || 'Pending'}</span>`;
 
-      // Action buttons (only for pending orders)
       let actionCell = "";
       if (!order.status || order.status.toLowerCase() === "pending") {
         actionCell = `
           <button class="action-btn confirm" data-id="${orderId}">Confirm</button>
-          <button class="action-btn action-btn-danger reject" data-id="${orderId}">Reject</button>
+          <button class="action-btn danger reject" data-id="${orderId}">Reject</button>
         `;
       }
 
-      // Append row
       tbody.innerHTML += `
         <tr>
           <td>${orderId}</td>
@@ -419,7 +438,6 @@ async function loadOrders() {
     });
   });
 
-  // Attach event listeners AFTER rows are added
   document.querySelectorAll(".action-btn.confirm").forEach(btn => {
     btn.addEventListener("click", () => updateStatus(btn.dataset.id, "Confirmed"));
   });
@@ -429,75 +447,138 @@ async function loadOrders() {
   });
 }
 
-// Update Firestore status
 async function updateStatus(orderId, newStatus) {
   try {
     const orderRef = doc(db, "orders", orderId);
     await updateDoc(orderRef, { status: newStatus });
-    loadOrders(); // Reload table after update
+    loadOrders();
   } catch (error) {
     console.error("Error updating status:", error);
-    alert("Failed to update order status.");
   }
 }
 
-// LoadUsers
+// Function to load Users
 async function loadUsers() {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    const tbody = document.querySelector("#usersTable tbody");
+  const querySnapshot = await getDocs(collection(db, "users"));
+  const tbody = document.querySelector("#usersTable tbody");
+  tbody.innerHTML = "";
+
+  querySnapshot.forEach((docSnap) => {
+    const user = docSnap.data();
+    const userId = docSnap.id;
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${user.fullname || '-'}</td>
+        <td>${user.username || '-'}</td>
+        <td>${user.email || '-'}</td>
+        <td><button class="action-btn danger deleteUserBtn" data-id="${userId}">Delete</button></td>
+      </tr>
+    `;
+  });
+
+  document.querySelectorAll(".deleteUserBtn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!confirm("Are you sure you want to delete this user?")) return;
+      try {
+        await deleteDoc(doc(db, "users", btn.dataset.id));
+        alert("User deleted successfully!");
+        loadUsers();
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
+    });
+  });
+}
+
+// Function to loadProducts
+async function loadProducts() {
+    const q = query(collection(db, "products")); 
+    const snapshot = await getDocs(q);
+    const tbody = document.querySelector("#productsTable tbody");
     tbody.innerHTML = "";
 
-    querySnapshot.forEach((docSnap) => {
-        const user = docSnap.data();
-        const userId = docSnap.id;
+    snapshot.forEach((docSnap) => {
+        const product = docSnap.data();
+        const productId = docSnap.id;
 
         tbody.innerHTML += `
-            <tr>
-                <td>${user.fullname || '-'}</td>
-                <td>${user.username || '-'}</td>
-                <td>${user.email || '-'}</td>
-                <td>
-                    <button class="action-btn danger deleteUserBtn" data-id="${userId}">Delete</button>
-                </td>
-            </tr>
+          <tr>
+            <td>${productId}</td>
+            <td><img src="${product.images && product.images[0] ? product.images[0] : ''}" width="60"></td>
+            <td>${product.name || ''}</td>
+            <td>${product.brand || ''}</td>
+            <td>${product.price || ''}</td>
+            <td><span class="status ${product.status}">${product.status}</span></td>
+            <td>
+              ${product.status === "pending" ? `
+                <button class="action-btn approveBtn" data-id="${productId}">Approve</button>
+                <button class="action-btn danger rejectBtn" data-id="${productId}">Reject</button>
+              ` : "—"}
+            </td>
+          </tr>
         `;
     });
 
-    document.querySelectorAll(".deleteUserBtn").forEach(btn => {
-        btn.addEventListener("click", async () => {
-            if (!confirm("Are you sure you want to delete this user?")) return;
-
-            try {
-                await deleteDoc(doc(db, "users", btn.dataset.id));
-                alert("User deleted successfully!");
-                loadUsers();
-            } catch (error) {
-                console.error("Error deleting user:", error);
-                alert("Failed to delete user.");
-            }
-        });
+    // Attach listeners
+    document.querySelectorAll(".approveBtn").forEach(btn => {
+        btn.addEventListener("click", () => updateProductStatus(btn.dataset.id, "approved"));
+    });
+    document.querySelectorAll(".rejectBtn").forEach(btn => {
+        btn.addEventListener("click", () => updateProductStatus(btn.dataset.id, "rejected"));
     });
 }
 
+async function updateProductStatus(productId, newStatus) {
+    try {
+        await updateDoc(doc(db, "products", productId), { status: newStatus });
+        alert(`Product ${newStatus}!`);
+        loadProducts(); // Refresh
+    } catch (err) {
+        console.error("Error updating product:", err);
+        alert("Failed to update product");
+    }
+}
 
-window.showUsers = () => {
-    // Hide welcome message
-    document.getElementById('welcomeMessage').style.display = 'none';
 
-    // Hide orders table
-    document.getElementById('ordersTable').classList.remove('active');
+window.showOrders = () => {
+  document.getElementById('welcomeMessage').style.display = 'none';
+  document.getElementById('ordersTable').classList.add('active');
+  document.getElementById('usersTable').classList.remove('active');
+  document.getElementById('productsTable').classList.remove('active');
 
-    // Show users table
-    document.getElementById('usersTable').classList.add('active');
+  document.getElementById('ordersBtn').classList.add('active');
+  document.getElementById('usersBtn').classList.remove('active');
+  document.getElementById('productsBtn').classList.remove('active');
 
-    // Load users
-    loadUsers();
-
-    // Update button states
-    document.getElementById('usersBtn').classList.add('active');
-    document.getElementById('ordersBtn').classList.remove('active');
+  loadOrders();
 };
 
+window.showUsers = () => {
+  document.getElementById('welcomeMessage').style.display = 'none';
+  document.getElementById('usersTable').classList.add('active');
+  document.getElementById('ordersTable').classList.remove('active');
+  document.getElementById('productsTable').classList.remove('active');
+
+  document.getElementById('usersBtn').classList.add('active');
+  document.getElementById('ordersBtn').classList.remove('active');
+  document.getElementById('productsBtn').classList.remove('active');
+
+  loadUsers();
+};
+
+window.showProducts = () => {
+  document.getElementById('welcomeMessage').style.display = 'none';
+  document.getElementById('productsTable').classList.add('active');
+  document.getElementById('ordersTable').classList.remove('active');
+  document.getElementById('usersTable').classList.remove('active');
+
+  document.getElementById('productsBtn').classList.add('active');
+  document.getElementById('ordersBtn').classList.remove('active');
+  document.getElementById('usersBtn').classList.remove('active');
+
+  loadProducts();
+};
 
 // Load orders on page load
 document.addEventListener("DOMContentLoaded", loadOrders);

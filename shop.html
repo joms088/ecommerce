@@ -3,411 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop - Start</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-        }
-
-        /* Header */
-        .header {
-            background: #7fb069;
-            color: white;
-            padding: 1rem 0;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo::before {
-            content: "///";
-            font-size: 1.5rem;
-            opacity: 0.8;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s ease;
-        }
-
-        .nav-menu a:hover {
-            opacity: 0.8;
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        .page-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 3rem;
-        }
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 1rem;
-        }
-
-        .product-info {
-            padding: 1.5rem;
-            background: #e8e8e8;
-        }
-
-        .product-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .product-price {
-            font-size: 1rem;
-            color: #666;
-            font-weight: 500;
-        }
-
-        /* Footer */
-        .footer {
-            background: #7fb069;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-        }
-
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .social-icon {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-
-        .footer-text {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .products-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-            }
-            
-            .container {
-                padding: 2rem 1rem;
-            }
-            
-            .nav-menu {
-                gap: 1rem;
-            }
-            
-            .nav-menu a {
-                font-size: 0.9rem;
-            }
-            
-            .page-title {
-                font-size: 1.5rem;
-                margin-bottom: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-container {
-                padding: 0 1rem;
-            }
-            
-            .logo {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="shop.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Shop</title>
 </head>
+<style>
+    .uil-shopping-cart[data-count]:after {
+    content: attr(data-count);
+    font-size: 12px;
+    color: #fff;
+    background: red;
+    border-radius: 50%;
+    padding: 2px 6px;
+    position: absolute;
+    top: -8px;
+    right: -10px;
+}
+#navbar li a i.uil-user-circle {
+    font-size: 22px;
+    vertical-align: middle;
+}
+#navbar li:first-child {
+    margin-right: 10px;
+}
+</style>
 <body>
-    <header class="header">
-        <div class="nav-container">
-            <div class="logo">Start</div>
-            <nav>
-                <ul class="nav-menu">
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="dashboard.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="shop.html">Shop</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container">
-        <h1 class="page-title">Our Products</h1>
-        
-        <div class="products-grid" id="productsGrid">
-            
-            <!-- <div class="product-card" onclick="viewProduct(1)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+    
+    <!-- Header -->
+     <header class="header">
+       <div>
+            <ul id="navbar">
+                <div class="logo">
+                    <img src="images/smallNikelogo_23.jpg" alt="">
                 </div>
-            </div>
+                <li id="profileMenu" style="display: none;"><a href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
+                <li><a href="ecommerce.html">Home</a></li>
+                <li><a class="active" href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="contact_link">Contact</a></li>
+                <li id="lg-bag"><a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
+                <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
+                <a href="#" id="close"><i class="uil uil-times"></i></a>
+            </ul>
+       </div>
+       <div id="mobile">
+        <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
+        <i id="bar" class="uil uil-bars"></i>
+       </div>
+     </header>
 
-            <div class="product-card" onclick="viewProduct(2)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
-                </div>
-            </div>
+     <section id="shop_page">
+        <h2>#stayhome</h2>
+        <p>Save more with coupons & up to 70% off!</p>
+     </section>
 
-            <div class="product-card" onclick="viewProduct(3)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
-                </div>
-            </div>
 
-            
-            <div class="product-card" onclick="viewProduct(4)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+     <!-- Products -->
+       <section id="feature_products" class="section-p1">
+            <div class="prod_container" id="product-list">
+                  <!-- <div class="prod" data-product-id="a-one-ep">
+                    <img src="product/BasketballC_A'ONE+EP.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>A' one EP</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                        
+                    </div>
                 </div>
-            </div>
-
-            <div class="product-card" onclick="viewProduct(5)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="giannis-immortality-4">
+                    <img src="product/BasketballC_GIANNIS+IMMORTALITY+4+EP.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Giannis Immortality 4 EP</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                      
+                    </div>
                 </div>
-            </div>
-
-            <div class="product-card" onclick="viewProduct(6)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="ja-2-koolaid">
+                    <img src="product/BasketballC_JA+2++KOOLAID++EP.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>JA 2 KoolAid EP</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                         <a href="#"><i class="uil uil-shopping-cart cart"></i></a> 
+                    </div>
                 </div>
-            </div>
-
-            
-            <div class="product-card" onclick="viewProduct(7)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="jordan-luka-4">
+                    <img src="product/BasketballC_JORDAN+LUKA+4+PF.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Jordan Luka 4 PF</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
                 </div>
-            </div>
-
-            <div class="product-card" onclick="viewProduct(8)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="kobe-ix-elite">
+                    <img src="product/BasketballC_KOBE+IX+ELITE+LOW+EM+PROTRO.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Kobe IX ELITE Low EM Protro</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
                 </div>
-            </div>
-
-            <div class="product-card" onclick="viewProduct(9)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="air-max-alpha">
+                    <img src="product/GymC_M+AIR+MAX+ALPHA+TRAINER+6.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Ari Max Alpha Trainer</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
                 </div>
-            </div>
-
-            
-            <div class="product-card" onclick="viewProduct(10)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="mc-trainer">
+                    <img src="product/GymC_M+NIKE+MC+TRAINER+3.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Nike MC Trainer</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                      
+                    </div>
                 </div>
-            </div>
-
-            <div class="product-card" onclick="viewProduct(11)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="metcon-10">
+                    <img src="product/GymC_M+NIKE+METCON+10.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Nike Metcon 10</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
                 </div>
-            </div>
-
-            <div class="product-card" onclick="viewProduct(12)">
-                <img class="product-image" src="" alt="Product Image">
-                <div class="product-info">
-                    <div class="product-name">Name of Product</div>
-                    <div class="product-price">Price</div>
+                <div class="prod" data-product-id="ree-metcon">
+                    <img src="product/GymC_NIKE+FREE+METCON+6.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Nike Free Metcon</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                      
+                    </div>
                 </div>
+                <div class="prod" data-product-id="jordan-1-low-g">
+                    <img src="product/JordanC_AIR+JORDAN+1+LOW+G.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Air Jordan Low</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="jordan-1-low">
+                    <img src="product/JordanC_AIR+JORDAN+1+LOW.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Air Jordan 1 Low</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="jordan-1-mid">
+                    <img src="product/JordanC_AIR+JORDAN+1+MID+SE.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Air Jordan Mid</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="jordan-flight-court">
+                    <img src="product/JordanC_JORDAN+FLIGHT+COURT.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Jordan Flight Court</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="jordan-spizike-low">
+                    <img src="product/JordanC_JORDAN+SPIZIKE+LOW.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Jordan Spizike Low</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="zoom-pegasus">
+                    <img src="product/RunningC_AIR+ZOOM+PEGASUS+41+LV8.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Air Zoom Pegasus</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="vomero-18">
+                    <img src="product/RunningC_NIKE+VOMERO+18.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Nike Vomero</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="vomero-plus">
+                    <img src="product/RunningC_NIKE+VOMERO+PLUS.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Nike Vomero Plus</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="prod" data-product-id="pegasus-plus">
+                    <img src="product/RunningC_PEGASUS+PLUS.avif" alt="">
+                    <div class="desc">
+                        <span>nike</span>
+                        <h5>Pegasus Plus</h5>
+                        <div class="star">
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                           <i class="uil uil-star"></i>
+                            <h4>₱1</h4>
+                        </div>
+                    
+                    </div>  
             </div> -->
+                
+            </div>
+       </section>
+
+       <!-- <section id="pagination" class="section-p1">
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#"><i class="uil uil-angle-right"></i></a>
+       </section> -->
+
+     <!-- Login/Signup Form -->
+      <section class="home">
+        <div class="form_container">
+            <i class="uil uil-times form_close"></i>
+            <!-- Login Form -->
+            <div class="form login_form">
+                <form action="#">
+                <div id="signInMessage" class="messageDiv" style="display: none;"></div>
+                    <h2>Login</h2>
+                    <div class="input_box">
+                        <input type="email" id="login_email" placeholder="Enter your Email" required>
+                        <i class="uil uil-envelope-alt username"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="login_password" placeholder="Enter your password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+
+                    <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check">
+                            <label for="check">Remember me</label>
+                        </span>
+                        <span>
+                            <a href="#" class="forgot_pw" id="forgotPassword">Forgot password?</a>
+                        </span>
+                    </div> 
+
+                    <button class="button" id="login_btn">Login</button>
+
+                    <p class="Pspace">or continue with</p>
+
+                    <div class="google">
+                        <button id="google-login-btn" class="google_button">
+                             <img src="google.png" alt="Google logo" class="google_icon">
+                                Sign in with Google
+                        </button>
+                    </div>
+
+                    <div class="login_singup">
+                        Don't have an account? <a href="#" id="signup">Signup</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+             <div class="form signup_form">
+                <form action="#">   
+                    <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
+                    <h2>Signup</h2>
+                    <div class="input_box">
+                        <input type="text" id="username" placeholder="Enter your username" required>
+                        <i class="uil uil-envelope-alt username"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                        <i class="uil uil-envelope-alt email"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="create_password" placeholder="Create password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+                     <div class="input_box">
+                        <input type="password" id="confirm_password" placeholder="Confirm password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+
+                    <!-- <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check">
+                            <label for="check">Remember me</label>
+                        </span>
+                        <span>
+                            <a href="#" class="forgot_pw">Forgot password?</a>
+                        </span>
+                    </div> -->
+
+                    <button class="button" id="signup_btn">Signup</button>
+
+                    <div class="login_singup">
+                        Already have an account? <a href="#" id="login">Login</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </main>
+      </section>
 
-    <footer class="footer">
-        <div class="social-icons">
-            <a href="#" class="social-icon">f</a>
-            <a href="#" class="social-icon">@</a>
-            <a href="#" class="social-icon">t</a>
-            <a href="#" class="social-icon">p</a>
-            <a href="#" class="social-icon">tt</a>
-            <a href="#" class="social-icon">yt</a>
+       <footer class="section-p1">
+        <div class="col_footer">
+            <h4>Contact</h4>
+            <p><strong>Adress: </strong> 562 Wellington Road, Street 32, San Francisco</p>
+            <p><strong>Phone: </strong> +63123 456 7890</p>
+            <p><strong>Email: </strong> jomari@gmail.com</p>
+            <div class="followUs">
+                <h4>Follow Us</h4>
+                <div class="icons">
+                    <i class="uil uil-facebook-f"></i>
+                    <i class="uil uil-twitter"></i>
+                    <i class="uil uil-instagram"></i>
+                    <i class="uil uil-youtube"></i>
+                </div>
+            </div>
         </div>
-        <p class="footer-text">© Start, 2022. All rights reserved.</p>
-    </footer>
 
-    <script>
-        function viewProduct(productId) {
-            // Navigate to product view page
-            console.log(`Viewing product ${productId}`);
-            // You can redirect to your product view page here
-            // window.location.href = `product-view.html?id=${productId}`;
-            
-            // For now, just show an alert
-            alert(`Viewing product ${productId}. You can implement navigation to product view page here.`);
-        }
+        <div class="col_footer">
+            <h4>About</h4>
+            <a href="#">About us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Contact us</a>
+        </div>
 
-        // Add some hover effects
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-5px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    </script>
+        <div class="col_footer">
+            <h4>Shop</h4>
+            <p>Men's Shoes</p>
+            <p>Women's Shoes</p>
+            <p>Basketball Shoes</p>
+            <p>Running Shoes</p>
+        </div>
+
+        <div class="copyright">
+            <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
+        </div>
+      </footer>
 </body>
 </html>
+<script type="module" src="firebase.js"></script>
+<script src="script.js"></script>
+<script type="module" src="productnav.js"></script>
+<script src="cartcount.js"></script>
 
 <script type="module">
-  import { db } from "./firebase.js";
-  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { app } from "./firebase.js";
 
-  async function loadProducts() {
-    const productsGrid = document.getElementById("productsGrid");
-    productsGrid.innerHTML = ""; // clear before loading
+const auth = getAuth(app);
 
-    try {
-      const querySnapshot = await getDocs(collection(db, "products"));
-      querySnapshot.forEach((doc) => {
-        const product = doc.data();
+const profileMenu = document.getElementById("profileMenu");
+const loginMenu = document.getElementById("loginMenu");
 
-        const card = document.createElement("div");
-        card.classList.add("product-card");
-        card.onclick = () => viewProduct(doc.id);
-
-        card.innerHTML = `
-          <img class="product-image" src="${product.imageUrl}" alt="${product.name}">
-          <div class="product-info">
-            <div class="product-name">${product.name}</div>
-            <div class="product-price">₱${product.price}</div>
-          </div>
-        `;
-
-        productsGrid.appendChild(card);
-      });
-    } catch (err) {
-      console.error("Error loading products:", err);
+// Watch login status
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is logged in
+        profileMenu.style.display = "block";
+        loginMenu.style.display = "none";
+    } else {
+        // User is logged out
+        profileMenu.style.display = "none";
+        loginMenu.style.display = "block";
     }
-  }
-
-  function viewProduct(productId) {
-    // Redirect or popup
-    window.location.href = `viewProduct.html?id=${productId}`;
-    // Example redirect:
-    // window.location.href = `product-view.html?id=${productId}`;
-  }
-
-  // Load products on page load
-  loadProducts();
+});
 </script>
