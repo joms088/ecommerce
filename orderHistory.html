@@ -7,6 +7,29 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <title>Order History</title>
 </head>
+<style>
+/* Popup style */
+.order-popup {
+  position: fixed;
+  top: 20px;        /* move to top */
+  left: 20px;       /* move to left */
+  background: #333;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-20px); /* slide in from top */
+  transition: all 0.5s ease;
+  z-index: 9999;
+}
+
+.order-popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+</style>
 <body>
     <!-- Header -->
     <header class="header">

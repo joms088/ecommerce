@@ -20,6 +20,100 @@
     top: -8px;
     right: -10px;
 }
+/* Modal background */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 10000;
+  transition: opacity 0.3s ease;
+}
+
+/* Modal box */
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  width: 320px;
+  max-width: 90%;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  animation: popup 0.3s ease;
+  position: relative;
+}
+
+/* Close button (X) */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+  transition: 0.2s;
+}
+.close-btn:hover {
+  color: #333;
+}
+
+/* Modal title */
+.modal-content h3 {
+  margin-bottom: 10px;
+  color: #222;
+  font-size: 18px;
+}
+
+/* Message */
+.modal-content p {
+  color: #555;
+  margin: 10px 0 20px;
+  font-size: 15px;
+}
+
+/* OK button */
+.modal-ok {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  background: #111;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.modal-ok:hover {
+  background: #444;
+}
+
+/* Animation */
+@keyframes popup {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+/* Popup style */
+.order-popup {
+  position: fixed;
+  top: 20px;        /* move to top */
+  left: 20px;       /* move to left */
+  background: #333;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-20px); /* slide in from top */
+  transition: all 0.5s ease;
+  z-index: 9999;
+}
+
+.order-popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 </style>
 <body>
     
@@ -214,6 +308,16 @@
             <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
         </div>
       </footer>
+
+      <!-- Modal for messages -->
+<div id="alertModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h3>Message</h3>
+    <p id="modalMessage">This is a placeholder message.</p>
+    <button class="modal-ok" onclick="closeModal()">OK</button>
+  </div>
+</div>
 </body>
 </html>
 <script type="module" src="firebase.js"></script>
@@ -221,25 +325,36 @@
 <script type="module" src="productnav.js"></script>
 <script src="cartcount.js"></script>
 <script type="module" src="authStatus.js"></script>
+<script type="module" src="notification.js"></script>
+
 <script type="module">
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { app } from './firebase.js';
 
 const auth = getAuth(app);
 
+// Modal functions
+function showModal(message) {
+  document.getElementById("modalMessage").textContent = message;
+  document.getElementById("alertModal").style.display = "flex";
+}
+window.closeModal = function () {
+  document.getElementById("alertModal").style.display = "none";
+};
+
 const MainImg = document.getElementById("MainImg");
 const smallimg = document.getElementsByClassName("small-img");
 
-smallimg[0].onclick = function(){ MainImg.src = smallimg[0].src; }
-smallimg[1].onclick = function(){ MainImg.src = smallimg[1].src; }
-smallimg[2].onclick = function(){ MainImg.src = smallimg[2].src; }
-smallimg[3].onclick = function(){ MainImg.src = smallimg[3].src; }
+smallimg[0].onclick = () => { MainImg.src = smallimg[0].src; };
+smallimg[1].onclick = () => { MainImg.src = smallimg[1].src; };
+smallimg[2].onclick = () => { MainImg.src = smallimg[2].src; };
+smallimg[3].onclick = () => { MainImg.src = smallimg[3].src; };
 
 document.getElementById('addToCartBtn').addEventListener('click', function () {
     // Check if logged in first
     onAuthStateChanged(auth, (user) => {
         if (!user) {
-            alert("You need to login/signup first to purchase a product.");
+            showModal("You need to login/signup first to purchase a product.");
             return;
         }
 
@@ -249,12 +364,12 @@ document.getElementById('addToCartBtn').addEventListener('click', function () {
         const productData = JSON.parse(sessionStorage.getItem('selectedProduct'));
 
         if (!size || size === "Select Size") {
-            alert("Please select a size.");
+            showModal("Please select a size.");
             return;
         }
 
         if (!quantity || quantity <= 0) {
-            alert("Please enter a valid quantity.");
+            showModal("Please enter a valid quantity.");
             return;
         }
 
@@ -277,7 +392,7 @@ document.getElementById('addToCartBtn').addEventListener('click', function () {
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
-        alert("Added to cart!");
+        showModal("Added to cart!");
     });
 });
 </script>

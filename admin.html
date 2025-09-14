@@ -235,6 +235,75 @@
                 min-height: 300px;
             }
         }
+
+        /* Modal Overlay */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Buttons */
+.modal-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+#modalOkBtn {
+  background: #6f42c1;
+  color: #fff;
+}
+
+#modalOkBtn:hover {
+  background: #59359c;
+}
+
+#modalCancelBtn {
+  background: #e9ecef;
+  color: #333;
+}
+
+#modalCancelBtn:hover {
+  background: #d6d6d6;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+
     </style>
 </head>
 <body>
@@ -338,6 +407,14 @@
         </div>
     </div>
 
+    <!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <p id="modalMessage"></p>
+    <div class="modal-buttons" id="modalButtons"></div>
+  </div>
+</div>
+
 </body>
 </html>
 
@@ -369,25 +446,62 @@ function showUsers() {
     document.getElementById('ordersBtn').classList.remove('active');
     document.getElementById('productsBtn').classList.remove('active');
 }
+function showModal(message, callback = null, confirmMode = false) {
+  const modal = document.getElementById("modal");
+  const modalMessage = document.getElementById("modalMessage");
+  const modalButtons = document.getElementById("modalButtons");
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                alert('Logged out successfully!');
-                // Reset to welcome screen
-                window.location.href = "adminLogin.html";
-            }
-        }
+  modalMessage.textContent = message;
+  modal.style.display = "flex";
+  modalButtons.innerHTML = "";
 
-        // function logout() {
-        //     if (confirm("Are you sure you want to logout?")) {
-        //         localStorage.removeItem("adminLoggedIn");
-        //         window.location.href = "adminLogin.html";
-        //     }
-        // }
+  if (confirmMode) {
+    // Cancel
+    const cancelBtn = document.createElement("button");
+    cancelBtn.id = "modalCancelBtn";
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.onclick = () => {
+      modal.style.display = "none";
+      if (callback) callback(false);
+    };
+    modalButtons.appendChild(cancelBtn);
+
+    // OK
+    const okBtn = document.createElement("button");
+    okBtn.id = "modalOkBtn";
+    okBtn.textContent = "OK";
+    okBtn.onclick = () => {
+      modal.style.display = "none";
+      if (callback) callback(true);
+    };
+    modalButtons.appendChild(okBtn);
+  } else {
+    // Simple OK
+    const okBtn = document.createElement("button");
+    okBtn.id = "modalOkBtn";
+    okBtn.textContent = "OK";
+    okBtn.onclick = () => {
+      modal.style.display = "none";
+      if (callback) callback(true);
+    };
+    modalButtons.appendChild(okBtn);
+  }
+}
+
+// ===== Replace Logout =====
+function logout() {
+  showModal("Are you sure you want to logout?", (confirmed) => {
+    if (confirmed) {
+      showModal("Logged out successfully!", () => {
+        window.location.href = "adminLogin.html";
+      });
+    }
+  }, true); // confirm mode
+}
 </script>
 
 <script type="module">
-import { getFirestore, collection, getDocs, updateDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import { app } from "./firebase.js";
 
 const db = getFirestore(app);
@@ -477,18 +591,20 @@ async function loadUsers() {
     `;
   });
 
-  document.querySelectorAll(".deleteUserBtn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      if (!confirm("Are you sure you want to delete this user?")) return;
+ document.querySelectorAll(".deleteUserBtn").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    showModal("Are you sure you want to delete this user?", async (confirmed) => {
+      if (!confirmed) return;
       try {
         await deleteDoc(doc(db, "users", btn.dataset.id));
-        alert("User deleted successfully!");
-        loadUsers();
+        showModal("User deleted successfully!", () => loadUsers());
       } catch (error) {
         console.error("Error deleting user:", error);
+        showModal("Failed to delete user. Try again.");
       }
-    });
+    }, true);
   });
+});
 }
 
 // Function to loadProducts
@@ -530,14 +646,13 @@ async function loadProducts() {
 }
 
 async function updateProductStatus(productId, newStatus) {
-    try {
-        await updateDoc(doc(db, "products", productId), { status: newStatus });
-        alert(`Product ${newStatus}!`);
-        loadProducts(); // Refresh
-    } catch (err) {
-        console.error("Error updating product:", err);
-        alert("Failed to update product");
-    }
+  try {
+    await updateDoc(doc(db, "products", productId), { status: newStatus });
+    showModal(`Product ${newStatus}!`, () => loadProducts());
+  } catch (err) {
+    console.error("Error updating product:", err);
+    showModal("Failed to update product");
+  }
 }
 
 

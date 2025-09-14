@@ -8,6 +8,27 @@
     <title>Contact</title>
 </head>
 <style>
+/* Popup style */
+.order-popup {
+  position: fixed;
+  top: 20px;        /* move to top */
+  left: 20px;       /* move to left */
+  background: #333;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-20px); /* slide in from top */
+  transition: all 0.5s ease;
+  z-index: 9999;
+}
+
+.order-popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 </style>
 <body>
     
@@ -209,6 +230,7 @@
 <script type="module" src="firebase.js"></script>
 <script src="script.js"></script>
 <script src="cartcount.js"></script>
+<script type="module" src="notification.js"></script>
 
 <script type="module">
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
