@@ -310,6 +310,29 @@ p{
   transform: translateY(0);
 }
 
+/* breadcrumbs */
+.breadcrumbs {
+  font-size: 14px;
+  margin: 20px 80px;
+  color: #555;
+}
+
+.breadcrumbs a {
+  color: #49088a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs a.active {
+  color: #222;
+  font-weight: 600;
+  pointer-events: none;
+}
+
 </style>
 <body>
     
@@ -336,6 +359,13 @@ p{
        </div>
      </header>
 
+     <!-- Breadcrumbs -->
+    <nav class="breadcrumbs">
+      <a href="ecommerce.html">Home</a> &gt;
+      <a href="account.html" class="active">Profile</a>
+    </nav>
+
+
      <!-- Profile Display -->
     <section class="profile-header">
         <i class="uil uil-user-circle"></i>
@@ -343,6 +373,7 @@ p{
             <h2 id="displayFullname"></h2>
             <p id="displayEmail"></p>
             <p class="username-text" id="displayUsername"></p>
+            <p id="displayAddress" style="color:#555;"></p>
         </div>
         <button class="order-history-btn" id="orderHistoryBtn">Order History</button>
     </section>
@@ -358,6 +389,9 @@ p{
 
         <label for="email">Email</label>
         <input type="email" id="email">
+
+        <label for="address" class="address-label">Address</label>
+        <input type="text" id="address" placeholder="Enter your Address">
 
         <label for="password">New Password</label>
         <input type="password" id="password">
@@ -384,14 +418,18 @@ p{
 
 
 <script type="module">
-import { getAuth, signOut, onAuthStateChanged, updateEmail, updatePassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { 
+  getAuth, signOut, onAuthStateChanged, updateEmail, updatePassword 
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import { 
+  getFirestore, collection, query, where, getDocs, updateDoc, doc 
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { app } from './firebase.js';
 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ===== Modal function with confirm support =====
+// ===== Modal function (unchanged) =====
 function showModal(message, callback = null, confirmMode = false) {
   const modal = document.getElementById("modal");
   const modalMessage = document.getElementById("modalMessage");
@@ -431,7 +469,6 @@ function showModal(message, callback = null, confirmMode = false) {
   }
 }
 
-// Close modal on outside click
 window.onclick = function (event) {
   const modal = document.getElementById("modal");
   if (event.target === modal) {
@@ -442,17 +479,29 @@ window.onclick = function (event) {
 // ===== Load user details =====
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
+    // 🔍 Find Firestore document using email (since ID is numeric)
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", user.email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docSnap = querySnapshot.docs[0];
       const data = docSnap.data();
+
       document.getElementById("displayFullname").textContent = data.fullname || "";
       document.getElementById("displayEmail").textContent = data.email || "";
       document.getElementById("displayUsername").textContent = data.username ? `@${data.username}` : "";
+      document.getElementById("displayAddress").textContent = data.address ? `📍 ${data.address}` : "📍 No address set";
 
       document.getElementById("fullname").value = data.fullname || "";
       document.getElementById("username").value = data.username || "";
       document.getElementById("email").value = data.email || "";
+      document.getElementById("address").value = data.address || "";
+
+      // Save document ID for later updates
+      document.getElementById("saveChangesBtn").dataset.docId = docSnap.id;
+    } else {
+      showModal("⚠️ No matching Firestore document found for this user.");
     }
   } else {
     window.location.href = "ecommerce.html";
@@ -466,19 +515,29 @@ document.getElementById("saveChangesBtn").addEventListener("click", async (e) =>
   const fullname = document.getElementById("fullname").value;
   const username = document.getElementById("username").value;
   const email = document.getElementById("email").value;
+  const address = document.getElementById("address").value;
   const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+  const docId = document.getElementById("saveChangesBtn").dataset.docId;
+
+  if (password !== confirmPassword) {
+    showModal(" Passwords do not match!");
+    return;
+  }
 
   try {
     const user = auth.currentUser;
-    await updateDoc(doc(db, "users", user.uid), { fullname, username, email });
+    const updateData = { fullname, username, email, address };
+
+    await updateDoc(doc(db, "users", docId), updateData);
 
     if (email !== user.email) await updateEmail(user, email);
     if (password.trim() !== "") await updatePassword(user, password);
 
-    showModal("Account details updated successfully!");
+    showModal(" Account details updated successfully!");
   } catch (error) {
     console.error("Error updating account:", error);
-    showModal("Failed to update account. " + error.message);
+    showModal(" Failed to update account. " + error.message);
   }
 });
 
@@ -493,7 +552,7 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
         });
       } catch (error) {
         console.error("Error during logout:", error);
-        showModal("Failed to log out. Please try again.");
+        showModal(" Failed to log out. Please try again.");
       }
     }
   }, true);

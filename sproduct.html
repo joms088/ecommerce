@@ -114,6 +114,27 @@
   transform: translateY(0);
 }
 
+/* breadcrumbs */
+.breadcrumb {
+  font-size: 14px;
+  margin: 15px 25px;
+  color: #555;
+}
+
+.breadcrumb a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  margin: 0 5px;
+}
+
+
 </style>
 <body>
     
@@ -139,6 +160,14 @@
         <i id="bar" class="uil uil-bars"></i>
        </div>
      </header>
+
+     <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="ecommerce.html">Home</a> <span>></span>
+            <a href="shop.html">Shop</a> <span>></span>
+            <span id="breadcrumbProductName">Product Details</span>
+        </nav>
+
 
      <section id="prod_details" class="section-p1">
         <div class="single-prod-image">
@@ -328,7 +357,7 @@
 <script type="module" src="notification.js"></script>
 
 <script type="module">
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import { app } from './firebase.js';
 
 const auth = getAuth(app);
@@ -349,6 +378,15 @@ smallimg[0].onclick = () => { MainImg.src = smallimg[0].src; };
 smallimg[1].onclick = () => { MainImg.src = smallimg[1].src; };
 smallimg[2].onclick = () => { MainImg.src = smallimg[2].src; };
 smallimg[3].onclick = () => { MainImg.src = smallimg[3].src; };
+
+// Display the product name in breadcrumb
+const breadcrumbName = document.getElementById('breadcrumbProductName');
+const productData = JSON.parse(sessionStorage.getItem('selectedProduct'));
+
+if (productData && productData.name) {
+  breadcrumbName.textContent = productData.name;
+}
+
 
 document.getElementById('addToCartBtn').addEventListener('click', function () {
     // Check if logged in first

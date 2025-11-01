@@ -1,462 +1,516 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="cart.css">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <title>Cart</title>
-</head>
-<style>
-    .checkout-popup {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 9999;
-}
-.popup-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  width: 300px;
-}
-.popup-buttons {
-  margin-top: 15px;
-}
-.popup-buttons button {
-  margin: 5px;
-  padding: 8px 16px;
-}
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="cart.css">
+      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+      <title>Cart</title>
+  </head>
+  <style>
+      .checkout-popup {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+  }
+  .popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+  }
+  .popup-buttons {
+    margin-top: 15px;
+  }
+  .popup-buttons button {
+    margin: 5px;
+    padding: 8px 16px;
+  }
 
-/* Modal background */
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.5);
-  z-index: 10000;
-  transition: opacity 0.3s ease;
-}
+  /* Modal background */
+  .modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    transition: opacity 0.3s ease;
+  }
 
-/* Modal box */
-.modal-content {
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  text-align: center;
-  width: 320px;
-  max-width: 90%;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-  animation: popup 0.3s ease;
-  position: relative;
-}
+  /* Modal box */
+  .modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    width: 320px;
+    max-width: 90%;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    animation: popup 0.3s ease;
+    position: relative;
+  }
 
-/* Close button (X) */
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 20px;
-  cursor: pointer;
-  color: #888;
-  transition: 0.2s;
-}
-.close-btn:hover {
-  color: #333;
-}
+  /* Close button (X) */
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #888;
+    transition: 0.2s;
+  }
+  .close-btn:hover {
+    color: #333;
+  }
 
-/* Modal title */
-.modal-content h3 {
-  margin-bottom: 10px;
-  color: #222;
-  font-size: 18px;
-}
+  /* Modal title */
+  .modal-content h3 {
+    margin-bottom: 10px;
+    color: #222;
+    font-size: 18px;
+  }
 
-/* Message */
-.modal-content p {
-  color: #555;
-  margin: 10px 0 20px;
-  font-size: 15px;
-}
+  /* Message */
+  .modal-content p {
+    color: #555;
+    margin: 10px 0 20px;
+    font-size: 15px;
+  }
 
-/* OK button */
-.modal-ok {
-  padding: 8px 18px;
-  border: none;
-  border-radius: 6px;
-  background: #111;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.modal-ok:hover {
-  background: #444;
-}
+  /* OK button */
+  .modal-ok {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #111;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .modal-ok:hover {
+    background: #444;
+  }
 
-/* Animation */
-@keyframes popup {
-  from {
-    transform: scale(0.8);
+  /* Animation */
+  @keyframes popup {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  /* Popup style */
+  .order-popup {
+    position: fixed;
+    top: 20px;        /* move to top */
+    left: 20px;       /* move to left */
+    background: #333;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-weight: 500;
     opacity: 0;
+    transform: translateY(-20px); /* slide in from top */
+    transition: all 0.5s ease;
+    z-index: 9999;
   }
-  to {
-    transform: scale(1);
+
+  .order-popup.show {
     opacity: 1;
+    transform: translateY(0);
   }
-}
-/* Popup style */
-.order-popup {
-  position: fixed;
-  top: 20px;        /* move to top */
-  left: 20px;       /* move to left */
-  background: #333;
-  color: #fff;
-  padding: 15px 20px;
-  border-radius: 8px;
-  font-weight: 500;
-  opacity: 0;
-  transform: translateY(-20px); /* slide in from top */
-  transition: all 0.5s ease;
-  z-index: 9999;
-}
 
-.order-popup.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+  /* breadcrumbs */
+  .breadcrumb {
+    font-size: 14px;
+    margin: 15px 25px;
+    color: #555;
+  }
 
-</style>
-<body>
-    
-     <!-- Header -->
-     <header class="header">
-       <div>
-            <ul id="navbar">
-                <div class="logo">
-                    <img src="images/smallNikelogo_23.jpg" alt="">
-                </div>
-                <li id="profileMenu" style="display: none;"><a href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
-                <li><a href="ecommerce.html">Home</a></li>
-                <li><a href="shop.html">Shop</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html" class="contact_link">Contact</a></li>
-                <li id="lg-bag"><a class="active" href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
-                <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
-                <a href="#" id="close"><i class="uil uil-times"></i></a>
-            </ul>
-       </div>
-       <div id="mobile">
-        <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
-        <i id="bar" class="uil uil-bars"></i>
-       </div>
-     </header>
+  .breadcrumb a {
+    color: #007bff;
+    text-decoration: none;
+  }
 
-     <section id="cart-header" class="cart-header">
-        <h2>#cart</h2>
-        <p>Add your coupon code & SAVE up to 70%</p>
-     </section>
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
 
-     <section id="cart" class="section-p1">
-        <table width="100%">
-            <thead>
-                <tr>
-                    <td>Remove</td>
-                    <td>Image</td>
-                    <td>Product</td>
-                    <td>Size</td>
-                    <td>Price</td>
-                    <td>Quantity</td>
-                    <td>SubTotal</td>
-                </tr>
-            </thead>
-            <tbody id="cartTableBody">
-                
-            </tbody>
-        </table>
-     </section>
+  .breadcrumb span {
+    margin: 0 5px;
+  }
 
-    <section id="cart-add" class="section-p1">
-        <div id="subtotal">
-            <h3>Cart Totals</h3>
-            <table>
-                <tr>
-                    <td>Cart SubTotal</td>
-                    <td id="subtotalAmount">₱0</td>
-                </tr>
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td id="totalAmount"><strong>₱0</strong></td>
-                </tr>
-            </table>
-            <button class="proceedBtn">Proceed to Checkout</button>
+  </style>
+  <body>
+      
+      <!-- Header -->
+      <header class="header">
+        <div>
+              <ul id="navbar">
+                  <div class="logo">
+                      <img src="images/smallNikelogo_23.jpg" alt="">
+                  </div>
+                  <li id="profileMenu" style="display: none;"><a href="account.html" title="My Account"><i class="uil uil-user-circle"></i></a></li>
+                  <li><a href="ecommerce.html">Home</a></li>
+                  <li><a href="shop.html">Shop</a></li>
+                  <li><a href="about.html">About</a></li>
+                  <li><a href="contact.html" class="contact_link">Contact</a></li>
+                  <li id="lg-bag"><a class="active" href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a></li>
+                  <li id="loginMenu"><a class="button" id="form-open">Login</a></li>
+                  <a href="#" id="close"><i class="uil uil-times"></i></a>
+              </ul>
         </div>
-    </section>     
-
-    <div id="checkoutPopup" class="checkout-popup" style="display:none;">
-  <div class="popup-content">
-    <h2>Upload Payment Proof</h2>
-    <input type="file" id="proofFile" accept=".png,.jpeg,.jpg,.pdf">
-    <div class="popup-buttons">
-      <button id="cancelCheckout">Cancel</button>
-      <button id="confirmCheckout">Proceed</button>
-    </div>
-  </div>
-</div>
-
-     <!-- Home -->
-      <section class="home">
-        <div class="form_container">
-            <i class="uil uil-times form_close"></i>
-            <!-- Login Form -->
-            <div class="form login_form">
-                <form action="#">
-                <div id="signInMessage" class="messageDiv" style="display: none;"></div>
-                    <h2>Login</h2>
-                    <div class="input_box">
-                        <input type="email" id="login_email" placeholder="Enter your Email" required>
-                        <i class="uil uil-envelope-alt username"></i>
-                    </div>
-                    <div class="input_box">
-                        <input type="password" id="login_password" placeholder="Enter your password" required>
-                        <i class="uil uil-lock password"></i>
-                        <i class="uil uil-eye-slash pw_hide"></i>
-                    </div>
-
-                    <div class="option_field">
-                        <span class="checkbox">
-                            <input type="checkbox" id="check">
-                            <label for="check">Remember me</label>
-                        </span>
-                        <span>
-                            <a href="#" class="forgot_pw" id="forgotPassword">Forgot password?</a>
-                        </span>
-                    </div> 
-
-                    <button class="button" id="login_btn">Login</button>
-
-                    <p class="Pspace">or continue with</p>
-
-                    <div class="google">
-                        <button id="google-login-btn" class="google_button">
-                             <img src="google.png" alt="Google logo" class="google_icon">
-                                Sign in with Google
-                        </button>
-                    </div>
-
-                    <div class="login_singup">
-                        Don't have an account? <a href="#" id="signup">Signup</a>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Signup Form -->
-             <div class="form signup_form">
-                <form action="#">   
-                    <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
-                    <h2>Signup</h2>
-                    <div class="input_box">
-                        <input type="text" id="username" placeholder="Enter your username" required>
-                        <i class="uil uil-envelope-alt username"></i>
-                    </div>
-                    <div class="input_box">
-                        <input type="email" id="email" placeholder="Enter your email" required>
-                        <i class="uil uil-envelope-alt email"></i>
-                    </div>
-                    <div class="input_box">
-                        <input type="password" id="create_password" placeholder="Create password" required>
-                        <i class="uil uil-lock password"></i>
-                        <i class="uil uil-eye-slash pw_hide"></i>
-                    </div>
-                     <div class="input_box">
-                        <input type="password" id="confirm_password" placeholder="Confirm password" required>
-                        <i class="uil uil-lock password"></i>
-                        <i class="uil uil-eye-slash pw_hide"></i>
-                    </div>
-
-                    <!-- <div class="option_field">
-                        <span class="checkbox">
-                            <input type="checkbox" id="check">
-                            <label for="check">Remember me</label>
-                        </span>
-                        <span>
-                            <a href="#" class="forgot_pw">Forgot password?</a>
-                        </span>
-                    </div> -->
-
-                    <button class="button" id="signup_btn">Signup</button>
-
-                    <div class="login_singup">
-                        Already have an account? <a href="#" id="login">Login</a>
-                    </div>
-                </form>
-            </div>
+        <div id="mobile">
+          <a href="cart.html" class="nav_link cart_link"><i class="uil uil-shopping-cart"></i></a>
+          <i id="bar" class="uil uil-bars"></i>
         </div>
+      </header>
+
+      <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="ecommerce.html">Home</a> <span>></span>
+          <span>Cart</span>
+        </nav>
+
+
+      <section id="cart-header" class="cart-header">
+          <h2>#cart</h2>
+          <p>Add your coupon code & SAVE up to 70%</p>
       </section>
 
-       <footer class="section-p1">
-        <div class="col_footer">
-            <h4>Contact</h4>
-            <p><strong>Adress: </strong> 562 Wellington Road, Street 32, San Francisco</p>
-            <p><strong>Phone: </strong> +63123 456 7890</p>
-            <p><strong>Email: </strong> jomari@gmail.com</p>
-            <div class="followUs">
-                <h4>Follow Us</h4>
-                <div class="icons">
-                    <i class="uil uil-facebook-f"></i>
-                    <i class="uil uil-twitter"></i>
-                    <i class="uil uil-instagram"></i>
-                    <i class="uil uil-youtube"></i>
-                </div>
-            </div>
-        </div>
+      <section id="cart" class="section-p1">
+          <table width="100%">
+              <thead>
+                  <tr>
+                      <td>Remove</td>
+                      <td>Image</td>
+                      <td>Product</td>
+                      <td>Size</td>
+                      <td>Price</td>
+                      <td>Quantity</td>
+                      <td>SubTotal</td>
+                  </tr>
+              </thead>
+              <tbody id="cartTableBody">
+                  
+              </tbody>
+          </table>
+      </section>
 
-        <div class="col_footer">
-            <h4>About</h4>
-            <a href="#">About us</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Contact us</a>
-        </div>
+      <section id="cart-add" class="section-p1">
+          <div id="subtotal">
+              <h3>Cart Totals</h3>
+              <table>
+                  <tr>
+                      <td>Cart SubTotal</td>
+                      <td id="subtotalAmount">₱0</td>
+                  </tr>
+                  <tr>
+                      <td><strong>Total</strong></td>
+                      <td id="totalAmount"><strong>₱0</strong></td>
+                  </tr>
+              </table>
+              <button class="proceedBtn">Proceed to Checkout</button>
+          </div>
+      </section>     
 
-        <div class="col_footer">
-            <h4>Shop</h4>
-            <p>Men's Shoes</p>
-            <p>Women's Shoes</p>
-            <p>Basketball Shoes</p>
-            <p>Running Shoes</p>
-        </div>
-
-        <div class="copyright">
-            <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
-        </div>
-      </footer>
-
-      <!-- Modal alert message -->
-      <div id="alertModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3>Message</h3>
-            <p id="modalMessage">This is a placeholder message.</p>
-            <button class="modal-ok" onclick="closeModal()">OK</button>
-        </div>
+      <div id="checkoutPopup" class="checkout-popup" style="display:none;">
+    <div class="popup-content">
+      <h2>Upload Payment Proof</h2>
+      <input type="file" id="proofFile" accept=".png,.jpeg,.jpg,.pdf">
+      <div class="popup-buttons">
+        <button id="cancelCheckout">Cancel</button>
+        <button id="confirmCheckout">Proceed</button>
+      </div>
     </div>
+  </div>
 
-<script>
-function showModal(message) {
-    document.getElementById('modalMessage').textContent = message;
-    document.getElementById('alertModal').style.display = 'flex';
-}
+      <!-- Home -->
+        <section class="home">
+          <div class="form_container">
+              <i class="uil uil-times form_close"></i>
+              <!-- Login Form -->
+              <div class="form login_form">
+                  <form action="#">
+                  <div id="signInMessage" class="messageDiv" style="display: none;"></div>
+                      <h2>Login</h2>
+                      <div class="input_box">
+                          <input type="email" id="login_email" placeholder="Enter your Email" required>
+                          <i class="uil uil-envelope-alt username"></i>
+                      </div>
+                      <div class="input_box">
+                          <input type="password" id="login_password" placeholder="Enter your password" required>
+                          <i class="uil uil-lock password"></i>
+                          <i class="uil uil-eye-slash pw_hide"></i>
+                      </div>
 
-function closeModal() {
-    document.getElementById('alertModal').style.display = 'none';
-}
-</script>
-</body>
-</html>
-<script type="module" src="firebase.js"></script>
-<script src="script.js"></script>
-<script src="cartcount.js"></script>
-<script type="module" src="authStatus.js"></script>
-<script type="module" src="notification.js"></script>
+                      <div class="option_field">
+                          <span class="checkbox">
+                              <input type="checkbox" id="check">
+                              <label for="check">Remember me</label>
+                          </span>
+                          <span>
+                              <a href="#" class="forgot_pw" id="forgotPassword">Forgot password?</a>
+                          </span>
+                      </div> 
 
-<script>
-function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.querySelectorAll('.uil-shopping-cart').forEach(icon => {
-        icon.setAttribute('data-count', totalQty > 0 ? totalQty : '');
-    });
-}
+                      <button class="button" id="login_btn">Login</button>
+
+                      <p class="Pspace">or continue with</p>
+
+                      <div class="google">
+                          <button id="google-login-btn" class="google_button">
+                              <img src="google.png" alt="Google logo" class="google_icon">
+                                  Sign in with Google
+                          </button>
+                      </div>
+
+                      <div class="login_singup">
+                          Don't have an account? <a href="#" id="signup">Signup</a>
+                      </div>
+                  </form>
+              </div>
+
+              <!-- Signup Form -->
+              <div class="form signup_form">
+                  <form action="#">   
+                      <div id="signUpMessage" class="messageDiv" style="display: none;"></div>
+                      <h2>Signup</h2>
+                      <div class="input_box">
+                          <input type="text" id="username" placeholder="Enter your username" required>
+                          <i class="uil uil-envelope-alt username"></i>
+                      </div>
+                      <div class="input_box">
+                          <input type="email" id="email" placeholder="Enter your email" required>
+                          <i class="uil uil-envelope-alt email"></i>
+                      </div>
+                      <div class="input_box">
+                          <input type="password" id="create_password" placeholder="Create password" required>
+                          <i class="uil uil-lock password"></i>
+                          <i class="uil uil-eye-slash pw_hide"></i>
+                      </div>
+                      <div class="input_box">
+                          <input type="password" id="confirm_password" placeholder="Confirm password" required>
+                          <i class="uil uil-lock password"></i>
+                          <i class="uil uil-eye-slash pw_hide"></i>
+                      </div>
+
+                      <!-- <div class="option_field">
+                          <span class="checkbox">
+                              <input type="checkbox" id="check">
+                              <label for="check">Remember me</label>
+                          </span>
+                          <span>
+                              <a href="#" class="forgot_pw">Forgot password?</a>
+                          </span>
+                      </div> -->
+
+                      <button class="button" id="signup_btn">Signup</button>
+
+                      <div class="login_singup">
+                          Already have an account? <a href="#" id="login">Login</a>
+                      </div>
+                  </form>
+              </div>
+          </div>
+        </section>
+
+        <footer class="section-p1">
+          <div class="col_footer">
+              <h4>Contact</h4>
+              <p><strong>Adress: </strong> 562 Wellington Road, Street 32, San Francisco</p>
+              <p><strong>Phone: </strong> +63123 456 7890</p>
+              <p><strong>Email: </strong> jomari@gmail.com</p>
+              <div class="followUs">
+                  <h4>Follow Us</h4>
+                  <div class="icons">
+                      <i class="uil uil-facebook-f"></i>
+                      <i class="uil uil-twitter"></i>
+                      <i class="uil uil-instagram"></i>
+                      <i class="uil uil-youtube"></i>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col_footer">
+              <h4>About</h4>
+              <a href="#">About us</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms & Conditions</a>
+              <a href="#">Contact us</a>
+          </div>
+
+          <div class="col_footer">
+              <h4>Shop</h4>
+              <p>Men's Shoes</p>
+              <p>Women's Shoes</p>
+              <p>Basketball Shoes</p>
+              <p>Running Shoes</p>
+          </div>
+
+          <div class="copyright">
+              <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
+          </div>
+        </footer>
+
+        <!-- Modal alert message -->
+        <div id="alertModal" class="modal">
+          <div class="modal-content">
+              <span class="close-btn" onclick="closeModal()">&times;</span>
+              <h3>Message</h3>
+              <p id="modalMessage">This is a placeholder message.</p>
+              <button class="modal-ok" onclick="closeModal()">OK</button>
+          </div>
+      </div>
+
+  <script>
+  function showModal(message) {
+      document.getElementById('modalMessage').textContent = message;
+      document.getElementById('alertModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+      document.getElementById('alertModal').style.display = 'none';
+  }
+  </script>
+  </body>
+  </html>
+  <script type="module" src="firebase.js"></script>
+  <script src="script.js"></script>
+  <script src="cartcount.js"></script>
+  <script type="module" src="authStatus.js"></script>
+  <script type="module" src="notification.js"></script>
+
+  <script>
+  function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.querySelectorAll('.uil-shopping-cart').forEach(icon => {
+          icon.setAttribute('data-count', totalQty > 0 ? totalQty : '');
+      });
+  }
 
 function renderCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const tableBody = document.getElementById('cartTableBody');
-    const subtotalAmount = document.getElementById('subtotalAmount');
-    const totalAmount = document.getElementById('totalAmount');
-    tableBody.innerHTML = '';
-    let subtotal = 0;
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const tableBody = document.getElementById('cartTableBody');
+  const subtotalAmount = document.getElementById('subtotalAmount');
+  const totalAmount = document.getElementById('totalAmount');
+  tableBody.innerHTML = '';
 
-    if (cart.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Your cart is empty.</td></tr>`;
-        subtotalAmount.textContent = "₱0";
-        totalAmount.textContent = "₱0";
-    } else {
-        cart.forEach((item, index) => {
-            // Ensure price is numeric
-            let priceNum = Number(String(item.price).replace(/[^0-9.]/g, ''));
-            if (isNaN(priceNum)) priceNum = 0;
+  let subtotal = 0; // before discount
+  let totalDiscounted = 0; // after discount
 
-            const total = priceNum * item.quantity;
-            subtotal += total;
+  if (cart.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Your cart is empty.</td></tr>`;
+    subtotalAmount.textContent = "₱0";
+    totalAmount.textContent = "₱0";
+  } else {
+    cart.forEach((item, index) => {
+      let priceNum = Number(String(item.price).replace(/[^0-9.]/g, ''));
+      if (isNaN(priceNum)) priceNum = 0;
 
-            tableBody.innerHTML += `
-                <tr>
-                    <td><button class="removeBtn" data-index="${index}">x</button></td>
-                    <td><img src="${item.image}" alt="${item.name}" width="60"></td>
-                    <td>${item.name}</td>
-                    <td>${item.size}</td>
-                    <td>₱${priceNum.toLocaleString()}</td>
-                    <td>
-                        <input class="tdQty" type="number" min="1" value="${item.quantity}" 
-                               data-index="${index}">
-                    </td>
-                    <td>₱${total.toLocaleString()}</td>
-                </tr>
-            `;
-        });
+      const originalTotal = priceNum * item.quantity;
+      subtotal += originalTotal;
 
-        subtotalAmount.textContent = `₱${subtotal.toLocaleString()}`;
-        totalAmount.textContent = `₱${subtotal.toLocaleString()}`;
-    }
+      let discount = 0;
+      if (item.quantity >= 3 && item.quantity < 5) {
+        discount = 0.10; // 10%
+      } else if (item.quantity >= 5) {
+        discount = 0.20; // 20%
+      }
 
-    updateCartCount();
-    attachCartEventListeners();
-}
+      const discountedPrice = priceNum - (priceNum * discount);
+      const discountedTotal = discountedPrice * item.quantity;
+      totalDiscounted += discountedTotal;
 
-function attachCartEventListeners() {
-    document.querySelectorAll('.tdQty').forEach(input => {
-        input.addEventListener('change', (e) => {
-            const index = e.target.dataset.index;
-            const newQty = parseInt(e.target.value);
-            if (newQty > 0) updateQuantity(index, newQty);
-        });
+      tableBody.innerHTML += `
+        <tr>
+          <td><button class="removeBtn" data-index="${index}">x</button></td>
+          <td><img src="${item.image}" alt="${item.name}" width="60"></td>
+          <td>${item.name}</td>
+          <td>${item.size}</td>
+          <td>
+            ₱${priceNum.toLocaleString()}
+            ${discount > 0 ? `<br><small style="color:green;">(${discount * 100}% off)</small>` : ''}
+          </td>
+          <td>
+            <input class="tdQty" type="number" min="1" value="${item.quantity}" data-index="${index}">
+          </td>
+          <td>₱${discountedTotal.toLocaleString()}</td>
+        </tr>
+      `;
     });
 
-    document.querySelectorAll('.removeBtn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const index = btn.dataset.index;
-            removeFromCart(index);
-        });
-    });
+    // update cart totals
+    subtotalAmount.innerHTML = `
+      <strong>₱${subtotal.toLocaleString()}</strong>
+      <br><small style="color:#777;">(Before Discount)</small>
+    `;
+    totalAmount.innerHTML = `
+      <strong>₱${totalDiscounted.toLocaleString()}</strong>
+      <br><small style="color:green;">(Total Discounted)</small>
+    `;
+  }
+
+  updateCartCount();
+  attachCartEventListeners();
 }
 
-function updateQuantity(index, newQty) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart[index].quantity = newQty;
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
-}
 
-function removeFromCart(index) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
-}
 
-// Initialize cart
-document.addEventListener('DOMContentLoaded', renderCart);
-</script>
+  function attachCartEventListeners() {
+      document.querySelectorAll('.tdQty').forEach(input => {
+          input.addEventListener('change', (e) => {
+              const index = e.target.dataset.index;
+              const newQty = parseInt(e.target.value);
+              if (newQty > 0) updateQuantity(index, newQty);
+          });
+      });
+
+      document.querySelectorAll('.removeBtn').forEach(btn => {
+          btn.addEventListener('click', () => {
+              const index = btn.dataset.index;
+              removeFromCart(index);
+          });
+      });
+  }
+
+  function updateQuantity(index, newQty) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart[index].quantity = newQty;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+  }
+
+  function removeFromCart(index) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+  }
+
+  // Initialize cart
+  document.addEventListener('DOMContentLoaded', renderCart);
+  </script>
 
 
 <script type="module">
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { 
+  getAuth 
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import { 
+  getFirestore, collection, addDoc, query, where, getDocs, orderBy, limit, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { app } from "./firebase.js";
 
 const auth = getAuth(app);
@@ -480,6 +534,20 @@ function fileToBase64(file) {
     reader.onerror = (err) => reject(err);
     reader.readAsDataURL(file);
   });
+}
+
+// Generate sequential order ID (1, 2, 3, ...)
+async function generateSequentialOrderID() {
+  const ordersRef = collection(db, "orders");
+  const q = query(ordersRef, orderBy("orderID", "desc"), limit(1));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    const lastOrder = querySnapshot.docs[0].data().orderID;
+    return lastOrder + 1;
+  } else {
+    return 1;
+  }
 }
 
 // Confirm Checkout
@@ -512,32 +580,67 @@ document.getElementById("confirmCheckout").addEventListener("click", async () =>
   }
 
   try {
-    // Convert file to base64
+    // Fetch username and address using uid
+    let username = "Unknown User";
+    let address = "No Address Provided";
+
+    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const userData = querySnapshot.docs[0].data();
+      username = userData.username || "Unknown User";
+      address = userData.address || "No Address Provided";
+    }
+
+    // Generate next order ID
+    const orderID = await generateSequentialOrderID();
+
+    // Generate discount code based on cart quantities
+    let discountCode = "NONE";
+    for (const item of cart) {
+      if (item.quantity >= 3 && item.quantity < 5) {
+        discountCode = "DISC10";
+        break;
+      } else if (item.quantity >= 5) {
+        discountCode = "DISC20";
+        break;
+      }
+    }
+
+    // Convert proof file to base64
     const base64Data = await fileToBase64(file);
 
-    // Save order with base64 proof
+    // Save order to Firestore (⚠️ original logic untouched)
     await addDoc(collection(db, "orders"), {
+      orderID: orderID,
       userId: user.uid,
+      username: username,
+      address: address,
       cart: cart.map(item => ({
         ...item,
-        price: Number(item.price.replace(/[^0-9.]/g, '')) // cleans ₱ sign
+        price: Number(item.price.replace(/[^0-9.]/g, ''))
       })),
       total: cart.reduce((sum, item) =>
         sum + (Number(item.price.replace(/[^0-9.]/g, '')) * item.quantity), 0
       ),
+      discountCode: discountCode, // ✅ added discount field
       proofData: base64Data,
       proofType: file.type,
       createdAt: serverTimestamp(),
-      status: "pending"
+      status: "pending",
+      declineReason: "" 
     });
 
-    showModal("Order placed! Please wait while we confirm your payment.");
+    showModal(`Order placed successfully! Wait for Confirmation. 
+Order #${orderID} under username: ${username}.
+Discount Code: ${discountCode}`);
+
     localStorage.removeItem("cart");
     document.getElementById("checkoutPopup").style.display = "none";
 
   } catch (error) {
-    console.error("Error:", error);
-    showModal("Failed to place order.");
+    console.error("Error placing order:", error);
+    showModal("⚠️ Failed to place order. Please try again.");
   }
 });
 </script>

@@ -1,5 +1,5 @@
 import { getFirestore, collection, query, where, onSnapshot } 
-  from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+  from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { app, auth } from "./firebase.js";
 
 const db = getFirestore(app);

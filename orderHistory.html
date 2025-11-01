@@ -6,30 +6,58 @@
     <link rel="stylesheet" href="cart.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <title>Order History</title>
+    <style>
+        /* Popup style */
+        .order-popup {
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          background: #333;
+          color: #fff;
+          padding: 15px 20px;
+          border-radius: 8px;
+          font-weight: 500;
+          opacity: 0;
+          transform: translateY(-20px);
+          transition: all 0.5s ease;
+          z-index: 9999;
+        }
+
+        .order-popup.show {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .print-btn {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          padding: 5px 10px;
+          cursor: pointer;
+        }
+
+        .print-btn:hover {
+          background-color: #0056b3;
+        }
+
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printSection, #printSection * {
+                visibility: visible;
+            }
+            #printSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-<style>
-/* Popup style */
-.order-popup {
-  position: fixed;
-  top: 20px;        /* move to top */
-  left: 20px;       /* move to left */
-  background: #333;
-  color: #fff;
-  padding: 15px 20px;
-  border-radius: 8px;
-  font-weight: 500;
-  opacity: 0;
-  transform: translateY(-20px); /* slide in from top */
-  transition: all 0.5s ease;
-  z-index: 9999;
-}
-
-.order-popup.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-</style>
 <body>
     <!-- Header -->
     <header class="header">
@@ -54,6 +82,13 @@
         </div>
     </header>
 
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs">
+        <a href="ecommerce.html">Home</a> &gt;
+        <a href="account.html">Profile</a> &gt;
+        <a href="orderHistory.html" class="active">Order History</a>
+    </nav>
+
     <section class="section-p1" id="order-history">
         <h2>Order History</h2>
         <table width="100%" id="orderTable">
@@ -66,6 +101,7 @@
                     <td>Quantity</td>
                     <td>Total</td>
                     <td>Status</td>
+                    <td>Print</td>
                 </tr>
             </thead>
             <tbody id="orderTableBody"></tbody>
@@ -74,127 +110,134 @@
         <p id="loginPrompt" style="display:none; text-align:center;">Please log in to view your order history.</p>
     </section>
 
-    <!-- <footer class="section-p1">
-        <div class="col_footer">
-            <h4>Contact</h4>
-            <p><strong>Address: </strong> 562 Wellington Road, Street 32, San Francisco</p>
-            <p><strong>Phone: </strong> +63123 456 7890</p>
-            <p><strong>Email: </strong> jomari@gmail.com</p>
-            <div class="followUs">
-                <h4>Follow Us</h4>
-                <div class="icons">
-                    <i class="uil uil-facebook-f"></i>
-                    <i class="uil uil-twitter"></i>
-                    <i class="uil uil-instagram"></i>
-                    <i class="uil uil-youtube"></i>
-                </div>
-            </div>
+    <!-- Print container -->
+    <div id="printSection" style="display:none;"></div>
+
+<script type="module">
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { app } from "./firebase.js";
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+const orderTableBody = document.getElementById('orderTableBody');
+const noOrders = document.getElementById('noOrders');
+const loginPrompt = document.getElementById('loginPrompt');
+const profileMenu = document.getElementById('profileMenu');
+const loginMenu = document.getElementById('loginMenu');
+const printSection = document.getElementById('printSection');
+
+function updateNavbar(user) {
+    if (user) {
+        profileMenu.style.display = 'list-item';
+        loginMenu.style.display = 'none';
+    } else {
+        profileMenu.style.display = 'none';
+        loginMenu.style.display = 'list-item';
+    }
+}
+
+function printOrder(item, discountCode) {
+    const priceNum = Number(item.price?.toString().replace(/[^0-9.]/g, '')) || 0;
+    const quantity = Number(item.quantity) || 0;
+    let total = priceNum * quantity;
+
+    // Apply discount
+    if (discountCode === "DISC10") total *= 0.9;
+    if (discountCode === "DISC20") total *= 0.8;
+
+    const content = `
+        <div style="text-align:center; font-family: Arial;">
+            <h2>Order Details</h2>
+            <img src="${item.image}" alt="${item.name}" width="120" style="margin-bottom:10px; border-radius:8px;">
+            <p><strong>Product:</strong> ${item.name}</p>
+            <p><strong>Size:</strong> ${item.size}</p>
+            <p><strong>Price:</strong> ₱${priceNum.toLocaleString()}</p>
+            <p><strong>Quantity:</strong> ${quantity}</p>
+            ${discountCode !== "NONE" ? `<p><strong>Discount:</strong> ${discountCode}</p>` : ""}
+            <p><strong>Total:</strong> ₱${total.toLocaleString()}</p>
         </div>
-        <div class="col_footer">
-            <h4>About</h4>
-            <a href="#">About us</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Contact us</a>
-        </div>
-        <div class="col_footer">
-            <h4>Shop</h4>
-            <p>Men's Shoes</p>
-            <p>Women's Shoes</p>
-            <p>Basketball Shoes</p>
-            <p>Running Shoes</p>
-        </div>
-        <div class="copyright">
-            <p>© 2025, Nike etc - HTML CSS Javascript Ecommerce</p>
-        </div>
-    </footer> -->
+    `;
+    printSection.innerHTML = content;
+    printSection.style.display = 'block';
+    window.print();
+    printSection.style.display = 'none';
+}
 
-    <script type="module">
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-        import { app } from "./firebase.js";
+function loadOrderHistory(user) {
+    if (!user) {
+        orderTableBody.innerHTML = '';
+        noOrders.style.display = 'none';
+        loginPrompt.style.display = 'block';
+        updateNavbar(null);
+        return;
+    }
 
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const orderTableBody = document.getElementById('orderTableBody');
-        const noOrders = document.getElementById('noOrders');
-        const loginPrompt = document.getElementById('loginPrompt');
-        const profileMenu = document.getElementById('profileMenu');
-        const loginMenu = document.getElementById('loginMenu');
+    const q = query(collection(db, "orders"), where("userId", "==", user.uid));
 
-        function updateNavbar(user) {
-            if (user) {
-                profileMenu.style.display = 'list-item';
-                loginMenu.style.display = 'none';
-            } else {
-                profileMenu.style.display = 'none';
-                loginMenu.style.display = 'list-item';
-            }
-        }
+    onSnapshot(q, (querySnapshot) => {
+        orderTableBody.innerHTML = '';
+        let hasOrders = false;
 
-        function loadOrderHistory(user) {
-            if (!user) {
-                orderTableBody.innerHTML = '';
-                noOrders.style.display = 'none';
-                loginPrompt.style.display = 'block';
-                updateNavbar(null);
-                return;
-            }
+        querySnapshot.forEach((docSnap) => {
+            const order = docSnap.data();
+            const discountCode = order.discountCode || "NONE";
 
-            const q = query(collection(db, "orders"), where("userId", "==", user.uid));
-            getDocs(q).then((querySnapshot) => {
-                orderTableBody.innerHTML = '';
-                let hasOrders = false;
+            order.cart.forEach(item => {
+                hasOrders = true;
+                const priceNum = Number(item.price?.toString().replace(/[^0-9.]/g, '')) || 0;
+                const totalBefore = priceNum * item.quantity;
 
-                querySnapshot.forEach((docSnap) => {
-                    const order = docSnap.data();
-                    const orderId = docSnap.id;
+                // apply discount
+                let total = totalBefore;
+                if (discountCode === "DISC10") total *= 0.9;
+                if (discountCode === "DISC20") total *= 0.8;
 
-                    order.cart.forEach(item => {
-                        hasOrders = true;
-                        let priceStr = String(item.price || '0');
-                        const priceNum = Number(priceStr.replace(/[^0-9.]/g, '')) || 0;
-                        const total = priceNum * item.quantity;
-                        const statusClass = (order.status || "pending").toLowerCase();
+                const statusClass = (order.status || "pending").toLowerCase();
 
-                        orderTableBody.innerHTML += `
-                            <tr>
-                                <td><img src="${item.image}" alt="${item.name}" width="60"></td>
-                                <td>${item.name}</td>
-                                <td>${item.size}</td>
-                                <td>₱${priceNum.toLocaleString()}</td>
-                                <td>${item.quantity}</td>
-                                <td>₱${total.toLocaleString()}</td>
-                                <td><span class="status ${statusClass}">${order.status || 'pending'}</span></td>
-                            </tr>
-                        `;
-                    });
-                });
-
-                if (!hasOrders) {
-                    noOrders.style.display = 'block';
-                    orderTableBody.style.display = 'none';
-                } else {
-                    noOrders.style.display = 'none';
-                    orderTableBody.style.display = 'table-row-group';
-                }
-                loginPrompt.style.display = 'none';
-            }).catch((error) => {
-                console.error("Error loading orders:", error);
-                orderTableBody.innerHTML = '<tr><td colspan="7">Error loading order history.</td></tr>';
-                loginPrompt.style.display = 'none';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${item.image}" alt="${item.name}" width="60"></td>
+                    <td>${item.name}</td>
+                    <td>${item.size}</td>
+                    <td>₱${priceNum.toLocaleString()}</td>
+                    <td>${item.quantity}</td>
+                    <td>
+                        ₱${total.toLocaleString()}
+                        ${discountCode !== "NONE" ? `<br><small style="color:green;">(${discountCode})</small>` : ""}
+                    </td>
+                    <td><span class="status ${statusClass}">${order.status || 'pending'}</span></td>
+                    <td><button class="print-btn">Print</button></td>
+                `;
+                row.querySelector('.print-btn').addEventListener('click', () => printOrder(item, discountCode));
+                orderTableBody.appendChild(row);
             });
-            updateNavbar(user);
+        });
+
+        if (!hasOrders) {
+            noOrders.style.display = 'block';
+            orderTableBody.style.display = 'none';
+        } else {
+            noOrders.style.display = 'none';
+            orderTableBody.style.display = 'table-row-group';
         }
+        loginPrompt.style.display = 'none';
+    });
 
-        onAuthStateChanged(auth, (user) => {
-            loadOrderHistory(user);
-        });
+    updateNavbar(user);
+}
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const user = auth.currentUser;
-            if (user) {
-                loadOrderHistory(user);
-            }
-        });
-    </script>
+onAuthStateChanged(auth, (user) => {
+    loadOrderHistory(user);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const user = auth.currentUser;
+    if (user) {
+        loadOrderHistory(user);
+    }
+});
+</script>
+
+</body>
+</html>

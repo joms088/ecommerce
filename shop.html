@@ -48,6 +48,27 @@
   transform: translateY(0);
 }
 
+/* Breadcrumb style */
+.breadcrumb {
+  font-size: 14px;
+  margin: 15px 25px;
+  color: #555;
+}
+
+.breadcrumb a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb span {
+  margin: 0 5px;
+}
+
+
 </style>
 <body>
     
@@ -73,6 +94,13 @@
         <i id="bar" class="uil uil-bars"></i>
        </div>
      </header>
+
+     <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="ecommerce.html">Home</a> <span>></span>
+            <span>Shop</span>
+        </nav>
+
 
      <section id="shop_page">
         <h2>#stayhome</h2>
@@ -517,7 +545,7 @@
 <script type="module" src="notification.js"></script>
 
 <script type="module">
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import { app } from "./firebase.js";
 
 const auth = getAuth(app);

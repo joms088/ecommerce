@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rider - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f8f8f8;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      width: 360px;
+      text-align: center;
+    }
+
+    h2 { color: #333; margin-bottom: 18px; }
+
+    input {
+      width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px;
+      border: 1px solid #ccc; font-size: 15px;
+    }
+
+    button {
+      width: 100%; padding: 10px; background: #3b82f6; border: none;
+      color: white; border-radius: 6px; font-size: 16px; cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #2563eb; }
+
+    .toggle-text { margin-top: 12px; font-size: 14px; color: #555; }
+    .toggle-text span { color: #3b82f6; cursor: pointer; font-weight: 600; }
+
+    .hidden { display: none; }
+
+    .popup {
+      position: fixed; top: 18px; right: 18px; background: #333; color: #fff;
+      padding: 12px 16px; border-radius: 8px; z-index: 9999; opacity: 0;
+      transform: translateY(-6px); transition: all 0.25s ease;
+    }
+    .popup.show { opacity: 1; transform: translateY(0); }
+
+    .small-note { font-size: 13px; color: #444; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h2>Rider Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button id="loginBtn">Login</button>
+      <div class="toggle-text">
+        Don't have an account? <span id="showSignup">Sign up</span>
+      </div>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="hidden">
+      <h2>Rider Signup</h2>
+      <input type="text" id="signupName" placeholder="Full Name" required />
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input type="password" id="signupPassword" placeholder="Password" required />
+      <button id="signupBtn">Sign up</button>
+      <div class="toggle-text">
+        Already have an account? <span id="showLogin">Login</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { db, collection, addDoc, query, where, getDocs } from "./firebase.js";
+
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const showSignup = document.getElementById("showSignup");
+    const showLogin = document.getElementById("showLogin");
+
+    showSignup.addEventListener("click", () => {
+      loginForm.classList.add("hidden");
+      signupForm.classList.remove("hidden");
+    });
+
+    showLogin.addEventListener("click", () => {
+      signupForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+    });
+
+    function showPopup(message, opts = {}) {
+      const popup = document.createElement("div");
+      popup.className = "popup";
+      popup.textContent = message;
+      if (opts.color) popup.style.background = opts.color;
+      document.body.appendChild(popup);
+      setTimeout(() => popup.classList.add("show"), 50);
+      setTimeout(() => {
+        popup.classList.remove("show");
+        setTimeout(() => popup.remove(), 300);
+      }, opts.duration || 3500);
+    }
+
+    // SIGNUP - Save new rider to Firestore
+    document.getElementById("signupBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const fullname = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+
+      if (!fullname || !email || !password) {
+        showPopup("Please fill in all fields.", { color: "red" });
+        return;
+      }
+
+      try {
+        const ridersRef = collection(db, "riders");
+        const q = query(ridersRef, where("email", "==", email));
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+          showPopup("Email already exists. Try logging in.", { color: "orange" });
+          return;
+        }
+
+        await addDoc(ridersRef, {
+          fullname,
+          email,
+          password,
+          role: "rider"
+        });
+
+        showPopup("Signup successful! You can now log in.", { color: "green" });
+        document.getElementById("signupName").value = "";
+        document.getElementById("signupEmail").value = "";
+        document.getElementById("signupPassword").value = "";
+
+        signupForm.classList.add("hidden");
+        loginForm.classList.remove("hidden");
+      } catch (error) {
+        console.error("Signup Error:", error);
+        showPopup("Error creating account.", { color: "red" });
+      }
+    });
+
+    // LOGIN - Verify user from Firestore
+    document.getElementById("loginBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      if (!email || !password) {
+        showPopup("Please enter both email and password.", { color: "red" });
+        return;
+      }
+
+      try {
+        const ridersRef = collection(db, "riders");
+        const q = query(ridersRef, where("email", "==", email), where("password", "==", password));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          showPopup("Invalid email or password.", { color: "red" });
+          return;
+        }
+
+        const riderData = snapshot.docs[0].data();
+        showPopup(`Welcome, ${riderData.fullname}!`, { color: "green" });
+
+        localStorage.setItem("loggedInRiderEmail", email);
+        localStorage.setItem("riderName", riderData.fullname);
+        localStorage.setItem("riderRole", riderData.role);
+
+        setTimeout(() => {
+          window.location.href = "riderDashboard.html";
+        }, 1500);
+      } catch (error) {
+        console.error("Login Error:", error);
+        showPopup("Error logging in.", { color: "red" });
+      }
+    });
+  </script>
+</body>
+</html>

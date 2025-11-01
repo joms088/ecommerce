@@ -118,6 +118,42 @@
             display: block;
         }
 
+        /* Riders Table Fix */
+        #ridersTable {
+            width: 100%;
+        }
+
+        #ridersTable .table-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #ridersTable .data-table {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        #ridersTable .data-table th,
+        #ridersTable .data-table td {
+            text-align: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        #ridersTable .data-table th {
+            background: #f0f4f8;
+            color: #333;
+        }
+
+        #ridersTable .data-table tr:hover {
+            background: #f9fafb;
+        }
+
         .table-header {
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
@@ -237,73 +273,74 @@
         }
 
         /* Modal Overlay */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.4);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
-/* Modal Box */
-.modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  animation: fadeIn 0.3s ease;
-}
+        /* Modal Box */
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease;
+        }
 
-.modal-content p {
-  margin-bottom: 20px;
-  font-size: 1rem;
-  color: #333;
-}
+        .modal-content p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+            color: #333;
+        }
 
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
 
-/* Buttons */
-.modal-buttons button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.3s;
-}
+        /* Buttons */
+        .modal-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
 
-#modalOkBtn {
-  background: #6f42c1;
-  color: #fff;
-}
+        #modalOkBtn {
+            background: #6f42c1;
+            color: #fff;
+        }
 
-#modalOkBtn:hover {
-  background: #59359c;
-}
+        #modalOkBtn:hover {
+            background: #59359c;
+        }
 
-#modalCancelBtn {
-  background: #e9ecef;
-  color: #333;
-}
+        #modalCancelBtn {
+            background: #e9ecef;
+            color: #333;
+        }
 
-#modalCancelBtn:hover {
-  background: #d6d6d6;
-}
+        #modalCancelBtn:hover {
+            background: #d6d6d6;
+        }
 
-@keyframes fadeIn {
-  from {opacity: 0; transform: scale(0.9);}
-  to {opacity: 1; transform: scale(1);}
-}
-
+        @keyframes fadeIn {
+            from {opacity: 0; transform: scale(0.9);}
+            to {opacity: 1; transform: scale(1);}
+        }
     </style>
 </head>
 <body>
@@ -317,15 +354,10 @@
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="nav-item" id="ordersBtn" onclick="showOrders()">
-                Orders
-            </div>
-            <div class="nav-item" id="usersBtn" onclick="showUsers()">
-                Users
-            </div>
-            <div class="nav-item" id="productsBtn" onclick="showProducts()">
-                Products
-            </div>
+            <div class="nav-item" id="ordersBtn" onclick="showOrders()">Orders</div>
+            <div class="nav-item" id="usersBtn" onclick="showUsers()">Users</div>
+            <div class="nav-item" id="productsBtn" onclick="showProducts()">Products</div>
+            <div class="nav-item" id="ridersBtn" onclick="showRiders()">Riders</div>
         </div>
 
         <!-- Main Content -->
@@ -337,26 +369,26 @@
                     <p>Select an option from the sidebar to view data</p>
                 </div>
 
-                <!-- Products table -->
-                 <div id="productsTable" class="table-container">
-  <div class="table-header">
-    <h2 class="table-title">Products Table</h2>
-  </div>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th>Product ID</th>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Price</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+                <!-- Products Table -->
+                <div id="productsTable" class="table-container">
+                    <div class="table-header">
+                        <h2 class="table-title">Products Table</h2>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Brand</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
 
                 <!-- Orders Table -->
                 <div id="ordersTable" class="table-container">
@@ -378,9 +410,7 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                           
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
 
@@ -398,9 +428,24 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                           
-                        </tbody>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <!-- Riders Table -->
+                <div id="ridersTable" class="table-container">
+                    <div class="table-header">
+                        <h2 class="table-title">Riders Table</h2>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -408,209 +453,304 @@
     </div>
 
     <!-- Modal -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <p id="modalMessage"></p>
-    <div class="modal-buttons" id="modalButtons"></div>
-  </div>
-</div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <div class="modal-buttons" id="modalButtons"></div>
+        </div>
+    </div>
 
+    <!-- Rider Assign Modal -->
+    <div id="assignModal" class="modal">
+        <div class="modal-content">
+            <p>Assign a Rider</p>
+            <select id="riderSelect" style="padding:8px;width:100%;margin-bottom:10px;border-radius:6px;">
+                <option value="">Select Rider</option>
+            </select>
+            <div class="modal-buttons">
+                <button id="assignCancelBtn" style="background:#e9ecef;">Cancel</button>
+                <button id="assignOkBtn" style="background:#6f42c1;color:white;">Assign</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
 <script>
-        function showOrders() {
+function showOrders() {
     document.getElementById('welcomeMessage').style.display = 'none';
-
-    // Show only orders
     document.getElementById('ordersTable').classList.add('active');
     document.getElementById('usersTable').classList.remove('active');
     document.getElementById('productsTable').classList.remove('active');
-
-    // Update sidebar active states
+    document.getElementById('ridersTable').classList.remove('active');
     document.getElementById('ordersBtn').classList.add('active');
     document.getElementById('usersBtn').classList.remove('active');
     document.getElementById('productsBtn').classList.remove('active');
+    document.getElementById('ridersBtn').classList.remove('active');
 }
 
 function showUsers() {
     document.getElementById('welcomeMessage').style.display = 'none';
-
-    // Show only users
     document.getElementById('usersTable').classList.add('active');
     document.getElementById('ordersTable').classList.remove('active');
     document.getElementById('productsTable').classList.remove('active');
-
-    // Update sidebar active states
+    document.getElementById('ridersTable').classList.remove('active');
     document.getElementById('usersBtn').classList.add('active');
     document.getElementById('ordersBtn').classList.remove('active');
     document.getElementById('productsBtn').classList.remove('active');
+    document.getElementById('ridersBtn').classList.remove('active');
 }
+
+function showProducts() {
+    document.getElementById('welcomeMessage').style.display = 'none';
+    document.getElementById('productsTable').classList.add('active');
+    document.getElementById('ordersTable').classList.remove('active');
+    document.getElementById('usersTable').classList.remove('active');
+    document.getElementById('ridersTable').classList.remove('active');
+    document.getElementById('productsBtn').classList.add('active');
+    document.getElementById('ordersBtn').classList.remove('active');
+    document.getElementById('usersBtn').classList.remove('active');
+    document.getElementById('ridersBtn').classList.remove('active');
+}
+
 function showModal(message, callback = null, confirmMode = false) {
-  const modal = document.getElementById("modal");
-  const modalMessage = document.getElementById("modalMessage");
-  const modalButtons = document.getElementById("modalButtons");
+    const modal = document.getElementById("modal");
+    const modalMessage = document.getElementById("modalMessage");
+    const modalButtons = document.getElementById("modalButtons");
 
-  modalMessage.textContent = message;
-  modal.style.display = "flex";
-  modalButtons.innerHTML = "";
+    modalMessage.textContent = message;
+    modal.style.display = "flex";
+    modalButtons.innerHTML = "";
 
-  if (confirmMode) {
-    // Cancel
-    const cancelBtn = document.createElement("button");
-    cancelBtn.id = "modalCancelBtn";
-    cancelBtn.textContent = "Cancel";
-    cancelBtn.onclick = () => {
-      modal.style.display = "none";
-      if (callback) callback(false);
-    };
-    modalButtons.appendChild(cancelBtn);
+    if (confirmMode) {
+        const cancelBtn = document.createElement("button");
+        cancelBtn.id = "modalCancelBtn";
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.onclick = () => {
+            modal.style.display = "none";
+            if (callback) callback(false);
+        };
+        modalButtons.appendChild(cancelBtn);
 
-    // OK
-    const okBtn = document.createElement("button");
-    okBtn.id = "modalOkBtn";
-    okBtn.textContent = "OK";
-    okBtn.onclick = () => {
-      modal.style.display = "none";
-      if (callback) callback(true);
-    };
-    modalButtons.appendChild(okBtn);
-  } else {
-    // Simple OK
-    const okBtn = document.createElement("button");
-    okBtn.id = "modalOkBtn";
-    okBtn.textContent = "OK";
-    okBtn.onclick = () => {
-      modal.style.display = "none";
-      if (callback) callback(true);
-    };
-    modalButtons.appendChild(okBtn);
-  }
+        const okBtn = document.createElement("button");
+        okBtn.id = "modalOkBtn";
+        okBtn.textContent = "OK";
+        okBtn.onclick = () => {
+            modal.style.display = "none";
+            if (callback) callback(true);
+        };
+        modalButtons.appendChild(okBtn);
+    } else {
+        const okBtn = document.createElement("button");
+        okBtn.id = "modalOkBtn";
+        okBtn.textContent = "OK";
+        okBtn.onclick = () => {
+            modal.style.display = "none";
+            if (callback) callback(true);
+        };
+        modalButtons.appendChild(okBtn);
+    }
 }
 
-// ===== Replace Logout =====
 function logout() {
-  showModal("Are you sure you want to logout?", (confirmed) => {
-    if (confirmed) {
-      showModal("Logged out successfully!", () => {
-        window.location.href = "adminLogin.html";
-      });
-    }
-  }, true); // confirm mode
+    showModal("Are you sure you want to logout?", (confirmed) => {
+        if (confirmed) {
+            showModal("Logged out successfully!", () => {
+                window.location.href = "adminLogin.html";
+            });
+        }
+    }, true);
 }
 </script>
 
 <script type="module">
-import { getFirestore, collection, getDocs, updateDoc, doc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-import { app } from "./firebase.js";
+import { getFirestore, collection, getDocs, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { app, db } from "./firebase.js";
 
-const db = getFirestore(app);
+const mainDb = getFirestore(app);
 
-// Function to load Orders
 async function loadOrders() {
-  const querySnapshot = await getDocs(collection(db, "orders"));
-  const tbody = document.querySelector("#ordersTable tbody");
-  tbody.innerHTML = "";
+    const querySnapshot = await getDocs(collection(mainDb, "orders"));
+    const tbody = document.querySelector("#ordersTable tbody");
+    tbody.innerHTML = "";
 
-  querySnapshot.forEach((docSnap) => {
-    const order = docSnap.data();
-    const orderId = docSnap.id;
+    querySnapshot.forEach((docSnap) => {
+        const order = docSnap.data();
+        const orderId = order.orderID 
+            ? `ORD-${String(order.orderID).padStart(3, "0")}` 
+            : docSnap.id;
 
-    order.cart.forEach(item => {
-      let proofCell = "No file";
-      if (order.proofData) {
-        proofCell = order.proofType === "application/pdf"
-          ? `<a href="${order.proofData}" target="_blank">View PDF</a>`
-          : `<img src="${order.proofData}" width="60">`;
-      }
+        const discountCode = order.discountCode || "NONE";
 
-      const statusClass = (order.status || "Pending").toLowerCase();
-      const statusCell = `<span class="status ${statusClass}">${order.status || 'Pending'}</span>`;
+        order.cart.forEach(item => {
+            let proofCell = "No file";
+            if (order.proofData) {
+                proofCell = order.proofType === "application/pdf"
+                    ? `<a href="${order.proofData}" target="_blank">View PDF</a>`
+                    : `<img src="${order.proofData}" width="60">`;
+            }
 
-      let actionCell = "";
-      if (!order.status || order.status.toLowerCase() === "pending") {
-        actionCell = `
-          <button class="action-btn confirm" data-id="${orderId}">Confirm</button>
-          <button class="action-btn danger reject" data-id="${orderId}">Reject</button>
-        `;
-      }
+            const priceNum = Number(item.price?.toString().replace(/[^0-9.]/g, '')) || 0;
+            const quantity = Number(item.quantity) || 0;
+            let total = priceNum * quantity;
+            if (discountCode === "DISC10") total *= 0.9;
+            if (discountCode === "DISC20") total *= 0.8;
 
-      tbody.innerHTML += `
-        <tr>
-          <td>${orderId}</td>
-          <td>${order.username || order.userId}</td>
-          <td>${item.name}</td>
-          <td><img src="${item.image}" width="50"></td>
-          <td>${item.size}</td>
-          <td>${item.quantity}</td>
-          <td>₱${(parseFloat(item.price) * parseInt(item.quantity)).toLocaleString()}</td>
-          <td>${proofCell}</td>
-          <td>${statusCell}</td>
-          <td>${actionCell}</td>
-        </tr>
-      `;
+            const statusClass = (order.statusAdmin || "Pending").toLowerCase();
+            const statusCell = `<span class="status ${statusClass}">${order.statusAdmin || 'Pending'}</span>`;
+
+            let actionCell = "";
+            if (!order.statusAdmin || order.statusAdmin.toLowerCase() === "pending") {
+                actionCell = `
+                    <button class="action-btn confirm" data-id="${docSnap.id}">Confirm</button>
+                    <button class="action-btn danger reject" data-id="${docSnap.id}">Reject</button>
+                `;
+            } else if (order.statusAdmin.toLowerCase() === "confirmed") {
+                actionCell = `
+                    <button class="action-btn assign" data-id="${docSnap.id}">Assign</button>
+                `;
+            } else if (order.statusAdmin.toLowerCase() === "assigned") {
+                actionCell = `<small style="color:green;">Assigned to ${order.assignedRider || 'N/A'}</small>`;
+            }
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${orderId}</td>
+                    <td>${order.username || order.userId}</td>
+                    <td>${item.name}</td>
+                    <td><img src="${item.image}" width="50"></td>
+                    <td>${item.size}</td>
+                    <td>${quantity}</td>
+                    <td>
+                        ₱${total.toLocaleString()}
+                        ${discountCode !== "NONE" ? `<br><small style="color:green;">(${discountCode})</small>` : ""}
+                    </td>
+                    <td>${proofCell}</td>
+                    <td>${statusCell}</td>
+                    <td>${actionCell}</td>
+                </tr>
+            `;
+        });
     });
-  });
 
-  document.querySelectorAll(".action-btn.confirm").forEach(btn => {
-    btn.addEventListener("click", () => updateStatus(btn.dataset.id, "Confirmed"));
-  });
+    document.querySelectorAll(".action-btn.confirm").forEach(btn =>
+        btn.addEventListener("click", () => updateStatus(btn.dataset.id, "Confirmed"))
+    );
 
-  document.querySelectorAll(".action-btn.reject").forEach(btn => {
-    btn.addEventListener("click", () => updateStatus(btn.dataset.id, "Rejected"));
-  });
+    document.querySelectorAll(".action-btn.reject").forEach(btn =>
+        btn.addEventListener("click", () => updateStatus(btn.dataset.id, "Rejected"))
+    );
+
+    document.querySelectorAll(".action-btn.assign").forEach(btn =>
+        btn.addEventListener("click", () => openAssignModal(btn.dataset.id))
+    );
 }
 
 async function updateStatus(orderId, newStatus) {
-  try {
-    const orderRef = doc(db, "orders", orderId);
-    await updateDoc(orderRef, { status: newStatus });
-    loadOrders();
-  } catch (error) {
-    console.error("Error updating status:", error);
-  }
+    try {
+        const orderRef = doc(mainDb, "orders", orderId);
+        if (newStatus === "Confirmed") {
+            await updateDoc(orderRef, {
+                statusAdmin: "Confirmed",
+                status: "Pending",
+                confirmedAt: new Date().toISOString(),
+            });
+        } else if (newStatus === "Rejected") {
+            await updateDoc(orderRef, {
+                statusAdmin: "Rejected",
+                status: "Rejected",
+                rejectedAt: new Date().toISOString(),
+            });
+        }
+        loadOrders();
+    } catch (error) {
+        console.error("Error updating status:", error);
+    }
 }
 
-// Function to load Users
+async function openAssignModal(orderId) {
+    const assignModal = document.getElementById("assignModal");
+    const riderSelect = document.getElementById("riderSelect");
+    const assignOkBtn = document.getElementById("assignOkBtn");
+    const assignCancelBtn = document.getElementById("assignCancelBtn");
+
+    riderSelect.innerHTML = `<option value="">Select Rider</option>`;
+
+    try {
+        const ridersSnapshot = await getDocs(collection(mainDb, "riders"));
+        ridersSnapshot.forEach((riderDoc) => {
+            const rider = riderDoc.data();
+            const option = document.createElement("option");
+            option.value = rider.fullname || rider.email;
+            option.textContent = rider.fullname || rider.email;
+            riderSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error loading riders:", error);
+        showModal("Failed to load riders from Firestore.");
+    }
+
+    assignModal.style.display = "flex";
+    assignCancelBtn.onclick = () => (assignModal.style.display = "none");
+
+    assignOkBtn.onclick = async () => {
+        const selectedRider = riderSelect.value;
+        if (!selectedRider) return alert("Please select a rider first.");
+
+        try {
+            await updateDoc(doc(mainDb, "orders", orderId), {
+                assignedRider: selectedRider,
+                statusAdmin: "Assigned",
+                status: "For Delivery",
+                assignedAt: new Date().toISOString(),
+            });
+            assignModal.style.display = "none";
+            showModal(`Order assigned to ${selectedRider}`);
+            loadOrders();
+        } catch (error) {
+            console.error("Error assigning rider:", error);
+            showModal("Failed to assign rider.");
+        }
+    };
+}
+
 async function loadUsers() {
-  const querySnapshot = await getDocs(collection(db, "users"));
-  const tbody = document.querySelector("#usersTable tbody");
-  tbody.innerHTML = "";
+    const querySnapshot = await getDocs(collection(mainDb, "users"));
+    const tbody = document.querySelector("#usersTable tbody");
+    tbody.innerHTML = "";
 
-  querySnapshot.forEach((docSnap) => {
-    const user = docSnap.data();
-    const userId = docSnap.id;
+    querySnapshot.forEach((docSnap) => {
+        const user = docSnap.data();
+        const userId = docSnap.id;
 
-    tbody.innerHTML += `
-      <tr>
-        <td>${user.fullname || '-'}</td>
-        <td>${user.username || '-'}</td>
-        <td>${user.email || '-'}</td>
-        <td><button class="action-btn danger deleteUserBtn" data-id="${userId}">Delete</button></td>
-      </tr>
-    `;
-  });
+        tbody.innerHTML += `
+            <tr>
+                <td>${user.fullname || '-'}</td>
+                <td>${user.username || '-'}</td>
+                <td>${user.email || '-'}</td>
+                <td><button class="action-btn danger deleteUserBtn" data-id="${userId}">Delete</button></td>
+            </tr>
+        `;
+    });
 
- document.querySelectorAll(".deleteUserBtn").forEach(btn => {
-  btn.addEventListener("click", async () => {
-    showModal("Are you sure you want to delete this user?", async (confirmed) => {
-      if (!confirmed) return;
-      try {
-        await deleteDoc(doc(db, "users", btn.dataset.id));
-        showModal("User deleted successfully!", () => loadUsers());
-      } catch (error) {
-        console.error("Error deleting user:", error);
-        showModal("Failed to delete user. Try again.");
-      }
-    }, true);
-  });
-});
+    document.querySelectorAll(".deleteUserBtn").forEach(btn =>
+        btn.addEventListener("click", async () => {
+            showModal("Are you sure you want to delete this user?", async (confirmed) => {
+                if (!confirmed) return;
+                try {
+                    await deleteDoc(doc(mainDb, "users", btn.dataset.id));
+                    showModal("User deleted successfully!", () => loadUsers());
+                } catch (error) {
+                    console.error("Error deleting user:", error);
+                    showModal("Failed to delete user. Try again.");
+                }
+            }, true);
+        })
+    );
 }
 
-// Function to loadProducts
 async function loadProducts() {
-    const q = query(collection(db, "products")); 
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(collection(mainDb, "products"));
     const tbody = document.querySelector("#productsTable tbody");
     tbody.innerHTML = "";
 
@@ -619,83 +759,132 @@ async function loadProducts() {
         const productId = docSnap.id;
 
         tbody.innerHTML += `
-          <tr>
-            <td>${productId}</td>
-            <td><img src="${product.images && product.images[0] ? product.images[0] : ''}" width="60"></td>
-            <td>${product.name || ''}</td>
-            <td>${product.brand || ''}</td>
-            <td>${product.price || ''}</td>
-            <td><span class="status ${product.status}">${product.status}</span></td>
-            <td>
-              ${product.status === "pending" ? `
-                <button class="action-btn approveBtn" data-id="${productId}">Approve</button>
-                <button class="action-btn danger rejectBtn" data-id="${productId}">Reject</button>
-              ` : "—"}
-            </td>
-          </tr>
+            <tr>
+                <td>${productId}</td>
+                <td><img src="${product.images?.[0] || ''}" width="60"></td>
+                <td>${product.name || ''}</td>
+                <td>${product.brand || ''}</td>
+                <td>${product.price || ''}</td>
+                <td><span class="status ${product.status}">${product.status}</span></td>
+                <td>
+                    ${product.status === "pending" ? `
+                        <button class="action-btn approveBtn" data-id="${productId}">Approve</button>
+                        <button class="action-btn danger rejectBtn" data-id="${productId}">Reject</button>
+                    ` : "—"}
+                </td>
+            </tr>
         `;
     });
 
-    // Attach listeners
-    document.querySelectorAll(".approveBtn").forEach(btn => {
-        btn.addEventListener("click", () => updateProductStatus(btn.dataset.id, "approved"));
-    });
-    document.querySelectorAll(".rejectBtn").forEach(btn => {
-        btn.addEventListener("click", () => updateProductStatus(btn.dataset.id, "rejected"));
-    });
+    document.querySelectorAll(".approveBtn").forEach(btn =>
+        btn.addEventListener("click", () => updateProductStatus(btn.dataset.id, "approved"))
+    );
+
+    document.querySelectorAll(".rejectBtn").forEach(btn =>
+        btn.addEventListener("click", () => updateProductStatus(btn.dataset.id, "rejected"))
+    );
 }
 
 async function updateProductStatus(productId, newStatus) {
-  try {
-    await updateDoc(doc(db, "products", productId), { status: newStatus });
-    showModal(`Product ${newStatus}!`, () => loadProducts());
-  } catch (err) {
-    console.error("Error updating product:", err);
-    showModal("Failed to update product");
-  }
+    try {
+        await updateDoc(doc(mainDb, "products", productId), { status: newStatus });
+        showModal(`Product ${newStatus}!`, () => loadProducts());
+    } catch (err) {
+        console.error("Error updating product:", err);
+        showModal("Failed to update product");
+    }
 }
 
+async function loadRiders() {
+    const tbody = document.querySelector("#ridersTable tbody");
+    tbody.innerHTML = "";
+
+    try {
+        const querySnapshot = await getDocs(collection(mainDb, "riders"));
+        querySnapshot.forEach((docSnap) => {
+            const rider = docSnap.data();
+            tbody.innerHTML += `
+                <tr>
+                    <td>${rider.fullname || '-'}</td>
+                    <td>${rider.email || '-'}</td>
+                    <td>
+                        <button class="action-btn danger deleteRiderBtn" data-id="${docSnap.id}">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        document.querySelectorAll(".deleteRiderBtn").forEach(btn =>
+            btn.addEventListener("click", async () => {
+                showModal("Are you sure you want to delete this rider?", async (confirmed) => {
+                    if (!confirmed) return;
+                    try {
+                        await deleteDoc(doc(mainDb, "riders", btn.dataset.id));
+                        showModal("Rider deleted successfully!", () => loadRiders());
+                    } catch (error) {
+                        console.error("Error deleting rider:", error);
+                        showModal("Failed to delete rider. Try again.");
+                    }
+                }, true);
+            })
+        );
+    } catch (error) {
+        console.error("Error loading riders:", error);
+        showModal("Failed to load riders. Check console for details.");
+    }
+}
+
+window.showRiders = () => {
+    document.getElementById('welcomeMessage').style.display = 'none';
+    document.getElementById('ridersTable').classList.add('active');
+    document.getElementById('ordersTable').classList.remove('active');
+    document.getElementById('usersTable').classList.remove('active');
+    document.getElementById('productsTable').classList.remove('active');
+    document.getElementById('ridersBtn').classList.add('active');
+    document.getElementById('ordersBtn').classList.remove('active');
+    document.getElementById('usersBtn').classList.remove('active');
+    document.getElementById('productsBtn').classList.remove('active');
+    loadRiders();
+};
 
 window.showOrders = () => {
-  document.getElementById('welcomeMessage').style.display = 'none';
-  document.getElementById('ordersTable').classList.add('active');
-  document.getElementById('usersTable').classList.remove('active');
-  document.getElementById('productsTable').classList.remove('active');
-
-  document.getElementById('ordersBtn').classList.add('active');
-  document.getElementById('usersBtn').classList.remove('active');
-  document.getElementById('productsBtn').classList.remove('active');
-
-  loadOrders();
+    document.getElementById('welcomeMessage').style.display = 'none';
+    document.getElementById('ordersTable').classList.add('active');
+    document.getElementById('usersTable').classList.remove('active');
+    document.getElementById('productsTable').classList.remove('active');
+    document.getElementById('ridersTable').classList.remove('active');
+    document.getElementById('ordersBtn').classList.add('active');
+    document.getElementById('usersBtn').classList.remove('active');
+    document.getElementById('productsBtn').classList.remove('active');
+    document.getElementById('ridersBtn').classList.remove('active');
+    loadOrders();
 };
 
 window.showUsers = () => {
-  document.getElementById('welcomeMessage').style.display = 'none';
-  document.getElementById('usersTable').classList.add('active');
-  document.getElementById('ordersTable').classList.remove('active');
-  document.getElementById('productsTable').classList.remove('active');
-
-  document.getElementById('usersBtn').classList.add('active');
-  document.getElementById('ordersBtn').classList.remove('active');
-  document.getElementById('productsBtn').classList.remove('active');
-
-  loadUsers();
+    document.getElementById('welcomeMessage').style.display = 'none';
+    document.getElementById('usersTable').classList.add('active');
+    document.getElementById('ordersTable').classList.remove('active');
+    document.getElementById('productsTable').classList.remove('active');
+    document.getElementById('ridersTable').classList.remove('active');
+    document.getElementById('usersBtn').classList.add('active');
+    document.getElementById('ordersBtn').classList.remove('active');
+    document.getElementById('productsBtn').classList.remove('active');
+    document.getElementById('ridersBtn').classList.remove('active');
+    loadUsers();
 };
 
 window.showProducts = () => {
-  document.getElementById('welcomeMessage').style.display = 'none';
-  document.getElementById('productsTable').classList.add('active');
-  document.getElementById('ordersTable').classList.remove('active');
-  document.getElementById('usersTable').classList.remove('active');
-
-  document.getElementById('productsBtn').classList.add('active');
-  document.getElementById('ordersBtn').classList.remove('active');
-  document.getElementById('usersBtn').classList.remove('active');
-
-  loadProducts();
+    document.getElementById('welcomeMessage').style.display = 'none';
+    document.getElementById('productsTable').classList.add('active');
+    document.getElementById('ordersTable').classList.remove('active');
+    document.getElementById('usersTable').classList.remove('active');
+    document.getElementById('ridersTable').classList.remove('active');
+    document.getElementById('productsBtn').classList.add('active');
+    document.getElementById('ordersBtn').classList.remove('active');
+    document.getElementById('usersBtn').classList.remove('active');
+    document.getElementById('ridersBtn').classList.remove('active');
+    loadProducts();
 };
 
-// Load orders on page load
 document.addEventListener("DOMContentLoaded", loadOrders);
-
 </script>

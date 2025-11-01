@@ -1,9 +1,9 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
-        GoogleAuthProvider, signInWithPopup, sendEmailVerification, sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, setDoc, doc, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-import { signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+        GoogleAuthProvider, signInWithPopup, sendEmailVerification, sendPasswordResetEmail, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, setDoc, doc, query, where, updateDoc, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 
   const firebaseConfig = {
@@ -24,7 +24,7 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth
     // const storage = getStorage(app);
     export {app, auth, db, provider, signOut, createUserWithEmailAndPassword,
             signInWithEmailAndPassword, setDoc, collection, getDocs, doc,query, where, updateDoc,
-            signInWithPopup, sendEmailVerification, sendPasswordResetEmail };
+            signInWithPopup, sendEmailVerification, sendPasswordResetEmail, onAuthStateChanged, addDoc, onSnapshot };
 
 document.addEventListener("DOMContentLoaded", () =>{
     const formOpenBtn = document.querySelector("#form-open"),
@@ -71,66 +71,70 @@ function showMessage(message, divId){
     }, 5000);
 }
 
+async function getNextUserId(db) {
+  const usersRef = collection(db, "users");
+  const querySnapshot = await getDocs(usersRef);
+  const existingIds = querySnapshot.docs
+    .map(doc => Number(doc.id))
+    .filter(id => !isNaN(id));
+
+  const nextId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
+  return nextId;
+}
+
+
 // Signup functionality
 const signup_btn = document.getElementById("signup_btn");
-signup_btn.addEventListener("click", (event) => {
-    event.preventDefault();
-    const fullname = document.getElementById("fullname").value;
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const create_password = document.getElementById("create_password").value;
-    const confirm_password = document.getElementById("confirm_password").value;
+signup_btn.addEventListener("click", async (event) => {
+  event.preventDefault();
 
-     if (create_password !== confirm_password) {
-         alert("Passwords do not match!");
-         return;
-     }
+  const fullname = document.getElementById("fullname").value;
+  const username = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+  const create_password = document.getElementById("create_password").value;
+  const confirm_password = document.getElementById("confirm_password").value;
 
-    const auth = getAuth();
-    const db = getFirestore();
+  if (create_password !== confirm_password) {
+    showPopup("Passwords do not match!");
+    return;
+  }
 
-    createUserWithEmailAndPassword(auth, email, create_password)
-    .then((userCredential)=>{
-        const user = userCredential.user;
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, create_password);
+    const user = userCredential.user;
 
-        const auth = getAuth();
-        sendEmailVerification(auth.currentUser)
-        .then(() => {
-            alert("Email Verification send!!");
-        })
-        .catch((error) =>{
-            console.error("Error sending Email Verification:", error);
-        });
+    // Send verification email
+    await sendEmailVerification(user);
+    showPopup("📩 Email Verification sent! Please check your inbox.", "success");
 
-        const userData = {
-            fullname: fullname,
-            username: username,
-            email: email,
-            create_password: create_password
+    // Generate clean numeric Firestore ID (1, 2, 3, ...)
+    const nextId = await getNextUserId(db);
 
-        }
-        showMessage("Account Created Succesfully", "signUpMessage");
-        const docRef = doc(db, "users", user.uid);
-        setDoc(docRef, userData)
-        .then(() =>{
-            // window.location.href = "index.html";
-            formContainer.classList.remove("active");
-        })
-        .catch((error) =>{
-            console.error("error writing document", error);
+    const userData = {
+      id: nextId,
+      fullname: fullname,
+      username: username,
+      email: email,
+      create_password: create_password,
+      uid: user.uid // Keep for linking Auth and Firestore
+    };
 
-        });
-    })
-    .catch((error) =>{
-        const errorCode = error.code;
-        if(errorCode == "auth/email-alreday-in-use"){
-            showMessage("Email Address Already Exists", "signUpMessage");
-        }else{
-            showMessage("Unable to Create User", "signUpMessage");
-        }
-    })
-    
+    // Store user data with numeric ID
+    await setDoc(doc(db, "users", String(nextId)), userData);
+
+    showPopup(" Account Created Successfully!", "success");
+    formContainer.classList.remove("active");
+
+  } catch (error) {
+    console.error("Signup Error:", error);
+    if (error.code === "auth/email-already-in-use") {
+      showPopup(" Email Address Already Exists", "error");
+    } else {
+      showPopup(" Unable to Create User", "error");
+    }
+  }
 });
+
 
 // Login functionality
 const login_btn = document.getElementById("login_btn");
@@ -147,20 +151,23 @@ login_btn.addEventListener("click", (event) =>{
         const user = userCredential.user;
 
         if(!user.emailVerified){
-            alert("Please verify your email before logging in.");
+            showPopup("⚠️ Please verify your email before logging in.", "error");
             signOut(auth);
             return;
         }
-        showMessage("Login is Successful", "signInMessage");
-        localStorage.setItem("loggedInUserId", user.uid);
-        window.location.href = "ecommerce.html";
+        showPopup("Login is Successful", "success");
+        setTimeout(() => {
+            localStorage.setItem("loggedInUserId", user.uid);
+            window.location.href = "ecommerce.html";
+        }, 2500);
     })
     .catch((error)=>{
         const errorCode = error.code;
         if(errorCode === "auth/invalid-credential"){
-            showMessage("Incorrect Email or Password", "signInMessage");
+            showPopup("Incorrect Email or Password", "error");
         }else{
-            showMessage("Account does not exixts", "signInMessage");
+            showPopup("⚠️ Account does not exist", "error");
+
         }
     });
 });
@@ -189,21 +196,48 @@ googleLogin.addEventListener("click", function(){
 // Logout function
 
 // Forgot Password
+function showPopup(message, type = "info") {
+    let popup = document.createElement("div");
+    popup.innerText = message;
+    popup.className = "order-popup";
+
+    // color style based on type
+    if (type === "success") {
+        popup.style.background = "green";
+    } else if (type === "error") {
+        popup.style.background = "red";
+    } else {
+        popup.style.background = "#333";
+    }
+
+    document.body.appendChild(popup);
+
+    setTimeout(() => popup.classList.add("show"), 100);
+    setTimeout(() => {
+        popup.classList.remove("show");
+        setTimeout(() => popup.remove(), 500);
+    }, 4000);
+}
+
 const forgotPassword = document.getElementById("forgotPassword");
 forgotPassword.addEventListener("click", (event) =>{
     event.preventDefault();
-    const login_email = document.getElementById("login_email").value;
+    const login_email = document.getElementById("login_email").value.trim();
 
     const auth = getAuth();
+
+    if (!login_email) {
+        showPopup("⚠️ Please enter your email first.", "error");
+        return;
+    }
+
     sendPasswordResetEmail(auth, login_email)
         .then(() => {
-            alert("Email sent.");
-    })
+            showPopup("📩 Password reset email sent! Check your inbox.", "success");
+        })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorMessage)
-  });
+            showPopup("" + error.message, "error");
+        });
 });
 
 // firestore Functionality
